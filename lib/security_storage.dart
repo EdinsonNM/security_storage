@@ -10,19 +10,20 @@ enum CanAuthenticateResponse {
   errorHwUnavailable,
   errorNoBiometricEnrolled,
   errorNoHardware,
-  errorSecurityUpdateRequired,
   unsupported,
-  unknown
+  unknown,
+  errorSecurityUpdateRequired
 }
 
 const _canAuthenticateMapping = {
-  '0': CanAuthenticateResponse.success,
-  '1': CanAuthenticateResponse.errorHwUnavailable,
-  '11': CanAuthenticateResponse.errorNoBiometricEnrolled,
-  '12': CanAuthenticateResponse.errorNoHardware,
-  '15': CanAuthenticateResponse.errorSecurityUpdateRequired,
-  '-1': CanAuthenticateResponse.unknown,
-  '-2': CanAuthenticateResponse.unsupported
+  'Success': CanAuthenticateResponse.success,
+  'ErrorHwUnavailable': CanAuthenticateResponse.errorHwUnavailable,
+  'ErrorNoBiometricEnrolled': CanAuthenticateResponse.errorNoBiometricEnrolled,
+  'ErrorNoHardware': CanAuthenticateResponse.errorNoHardware,
+  'ErrorUnknown': CanAuthenticateResponse.unknown,
+  'ErrorSecurityUpdateRequired':
+      CanAuthenticateResponse.errorSecurityUpdateRequired,
+  'ErrorUnsupported': CanAuthenticateResponse.unsupported
 };
 
 enum AuthExceptionCode {

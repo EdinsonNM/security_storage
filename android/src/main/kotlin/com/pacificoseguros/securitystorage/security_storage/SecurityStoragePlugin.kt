@@ -173,8 +173,10 @@ public class SecurityStoragePlugin: FlutterPlugin, MethodCallHandler, ActivityAw
       else -> result.notImplemented()
     }
   }
-  private fun canAuthenticate(): Int {
-    return BiometricManager.from(this.context).canAuthenticate()
+  private fun canAuthenticate(): CanAuthenticateResponse {
+    var response = BiometricManager.from(this.context).canAuthenticate()
+    return CanAuthenticateResponse.values().firstOrNull { it.code == response }
+            ?: throw Exception("Unknown response code {$response} (available: ${CanAuthenticateResponse.values()}")
   }
   fun updateFingerPrintManager(fingerprintMgr: FingerprintManager){
     this.fingerprintMgr = fingerprintMgr
@@ -231,7 +233,7 @@ public class SecurityStoragePlugin: FlutterPlugin, MethodCallHandler, ActivityAw
         }
       })
     }
-    
+
   }
 
   private fun authenticateToDecrypt(secretKeyName: String, onError: ErrorCallback) {
@@ -385,4 +387,14 @@ data class StorageItem(
         var encryptedData: EncryptedData? = null
 ){
   constructor(name: String, options: InitOptions):this(name, options, null)
+}
+
+enum class CanAuthenticateResponse(val code: Int) {
+  Success(BiometricManager.BIOMETRIC_SUCCESS),
+  ErrorHwUnavailable(BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE),
+  ErrorNoBiometricEnrolled(BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED),
+  ErrorNoHardware(BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE),
+  ErrorSecurityUpdateRequired(BiometricManager.BIOMETRIC_ERROR_SECURITY_UPDATE_REQUIRED),
+  ErrorUnsupported(BiometricManager.BIOMETRIC_ERROR_UNSUPPORTED),
+  ErrorStatusUnknown(BiometricManager.BIOMETRIC_STATUS_UNKNOWN)
 }
