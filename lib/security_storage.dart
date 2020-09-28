@@ -83,8 +83,9 @@ class SecurityStorage {
 
   static Future<CanAuthenticateResponse> canAuthenticate() async {
     if (Platform.isAndroid) {
-      return _canAuthenticateMapping[
-          await _channel.invokeMethod<String>('canAuthenticate')];
+      var result = await _channel.invokeMethod<String>('canAuthenticate');
+      print(result);
+      return _canAuthenticateMapping[result];
     }
     return CanAuthenticateResponse.unsupported;
   }
