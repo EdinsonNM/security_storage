@@ -32,6 +32,23 @@ enum AuthExceptionCode {
   timeout,
 }
 
+class AuthException implements Exception {
+  AuthException(this.code, this.message);
+
+  final AuthExceptionCode code;
+  final String message;
+
+  @override
+  String toString() {
+    return 'AuthException{code: $code, message: $message}';
+  }
+}
+
+const _authErrorCodeMapping = {
+  'AuthError:UserCanceled': AuthExceptionCode.userCanceled,
+  'AuthError:Timeout': AuthExceptionCode.timeout,
+};
+
 class AndroidPromptInfo {
   const AndroidPromptInfo({
     this.title = 'Authenticate to unlock data',
@@ -121,21 +138,41 @@ class SecurityStorage {
   }
 
   Future<String> read(String name) =>
-      _channel.invokeMethod<String>('read', <String, dynamic>{
+      _transformErrors(_channel.invokeMethod<String>('read', <String, dynamic>{
         'name': name,
         'androidPromptInfo': androidPromptInfo._toJson()
-      });
+      }));
 
   Future<bool> delete(String name) =>
-      _channel.invokeMethod<bool>('delete', <String, dynamic>{
+      _transformErrors(_channel.invokeMethod<bool>('delete', <String, dynamic>{
         'name': name,
         'androidPromptInfo': androidPromptInfo._toJson()
-      });
+      }));
 
   Future<void> write(String name, String content) =>
-      _channel.invokeMethod('write', <String, dynamic>{
+      _transformErrors(_channel.invokeMethod('write', <String, dynamic>{
         'name': name,
         'content': content,
         'androidPromptInfo': androidPromptInfo._toJson()
+      }));
+
+  Future<T> _transformErrors<T>(Future<T> future) =>
+      future.catchError((dynamic error, StackTrace stackTrace) {
+        _logger.warning(
+            'Error during plugin operation (details: ${error.details})',
+            error,
+            stackTrace);
+        if (error is PlatformException) {
+          if (error.code.startsWith('AuthError:')) {
+            return Future<T>.error(
+              AuthException(
+                _authErrorCodeMapping[error.code] ?? AuthExceptionCode.unknown,
+                error.message,
+              ),
+              stackTrace,
+            );
+          }
+        }
+        return Future<T>.error(error, stackTrace);
       });
 }

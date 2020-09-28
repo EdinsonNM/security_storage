@@ -186,7 +186,7 @@ public class SecurityStoragePlugin: FlutterPlugin, MethodCallHandler, ActivityAw
       override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
         super.onAuthenticationError(errorCode, errString)
         Log.d(TAG, "$errorCode :: $errString")
-        ui(onError) { onError(AuthenticationErrorInfo(errorCode, errString)) }
+        ui(onError) { onError(AuthenticationErrorInfo(AuthenticationError.forCode(errorCode), errString)) }
       }
 
       override fun onAuthenticationFailed() {
@@ -229,7 +229,7 @@ public class SecurityStoragePlugin: FlutterPlugin, MethodCallHandler, ActivityAw
       }, {
         Log.d(TAG, it.message)
         ui(onError) {
-          onError(AuthenticationErrorInfo(CryptographyManager.KeyPermanentlyInvalidatedExceptionCode, it.message.toString(), it.cause!!.message))
+          onError(AuthenticationErrorInfo(AuthenticationError.ErrorKeyPermanentlyInvalidated, it.message.toString(), it.cause!!.message))
         }
       })
     }
@@ -252,7 +252,7 @@ public class SecurityStoragePlugin: FlutterPlugin, MethodCallHandler, ActivityAw
       }, {
         Log.d(TAG, it.message)
         ui(onError) {
-          onError(AuthenticationErrorInfo(CryptographyManager.KeyPermanentlyInvalidatedExceptionCode, it.message.toString(), it.cause!!.message))
+          onError(AuthenticationErrorInfo(AuthenticationError.ErrorKeyPermanentlyInvalidated, it.message.toString(), it.cause!!.message))
         }
       })
 
@@ -269,7 +269,7 @@ public class SecurityStoragePlugin: FlutterPlugin, MethodCallHandler, ActivityAw
       }, {
         Log.d(TAG, it.message)
         ui(onError) {
-          onError(AuthenticationErrorInfo(CryptographyManager.KeyPermanentlyInvalidatedExceptionCode, it.message.toString(), it.cause!!.message))
+          onError(AuthenticationErrorInfo(AuthenticationError.ErrorKeyPermanentlyInvalidated, it.message.toString(), it.cause!!.message))
         }
       })
 
@@ -329,7 +329,7 @@ public class SecurityStoragePlugin: FlutterPlugin, MethodCallHandler, ActivityAw
       cb()
     } catch (e: Throwable) {
       Log.e(TAG, "Error while calling UI callback. This must not happen.")
-      onError(AuthenticationErrorInfo(0, "Unexpected authentication error. ${e.localizedMessage}", e))
+      onError(AuthenticationErrorInfo(AuthenticationError.Unknown, "Unexpected authentication error. ${e.localizedMessage}", e))
     }
   }
 }
@@ -340,6 +340,9 @@ enum class AuthenticationError(val code: Int) {
   Canceled(BiometricPrompt.ERROR_CANCELED),
   Timeout(BiometricPrompt.ERROR_TIMEOUT),
   UserCanceled(BiometricPrompt.ERROR_USER_CANCELED),
+  ErrorLockout(BiometricPrompt.ERROR_LOCKOUT),
+  ErrorLockoutPermanent(BiometricPrompt.ERROR_LOCKOUT_PERMANENT),
+  ErrorKeyPermanentlyInvalidated(-3),
   Unknown(-1),
   /** Authentication valid, but unknown */
   Failed(-2),
@@ -352,12 +355,12 @@ enum class AuthenticationError(val code: Int) {
 }
 
 data class AuthenticationErrorInfo(
-        val error: Int,
+        val error: AuthenticationError,
         val message: CharSequence,
         val errorDetails: String? = null
 ) {
   constructor(
-          error: Int,
+          error: AuthenticationError,
           message: CharSequence,
           e: Throwable
   ) : this(error, message, e.toString())
@@ -398,3 +401,4 @@ enum class CanAuthenticateResponse(val code: Int) {
   ErrorUnsupported(BiometricManager.BIOMETRIC_ERROR_UNSUPPORTED),
   ErrorStatusUnknown(BiometricManager.BIOMETRIC_STATUS_UNKNOWN)
 }
+

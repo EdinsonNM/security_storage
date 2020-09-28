@@ -20,7 +20,7 @@ data class InitOptions(
 )
 interface CryptographyManager {
     companion object{
-        const val KeyPermanentlyInvalidatedExceptionCode=99
+        const val KeyPermanentlyInvalidatedExceptionCode=-3
     }
     /**
      * This method first gets or generates an instance of SecretKey and then initializes the Cipher
