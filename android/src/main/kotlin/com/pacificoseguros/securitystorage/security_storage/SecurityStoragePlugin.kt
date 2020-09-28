@@ -340,9 +340,10 @@ enum class AuthenticationError(val code: Int) {
   Canceled(BiometricPrompt.ERROR_CANCELED),
   Timeout(BiometricPrompt.ERROR_TIMEOUT),
   UserCanceled(BiometricPrompt.ERROR_USER_CANCELED),
-  ErrorLockout(BiometricPrompt.ERROR_LOCKOUT),
-  ErrorLockoutPermanent(BiometricPrompt.ERROR_LOCKOUT_PERMANENT),
-  ErrorKeyPermanentlyInvalidated(-3),
+  Lockout(BiometricPrompt.ERROR_LOCKOUT),
+  LockoutPermanent(BiometricPrompt.ERROR_LOCKOUT_PERMANENT),
+  NegativeButton(BiometricPrompt.ERROR_NEGATIVE_BUTTON),
+  KeyPermanentlyInvalidated(-3),
   Unknown(-1),
   /** Authentication valid, but unknown */
   Failed(-2),

@@ -30,6 +30,9 @@ enum AuthExceptionCode {
   userCanceled,
   unknown,
   timeout,
+  negativeButton,
+  lockout,
+  lockoutPermanent
 }
 
 class AuthException implements Exception {
@@ -45,8 +48,11 @@ class AuthException implements Exception {
 }
 
 const _authErrorCodeMapping = {
-  'AuthError:UserCanceled': AuthExceptionCode.userCanceled,
-  'AuthError:Timeout': AuthExceptionCode.timeout,
+  'UserCanceled': AuthExceptionCode.userCanceled,
+  'Timeout': AuthExceptionCode.timeout,
+  'Lockout': AuthExceptionCode.lockout,
+  'LockoutPermanent': AuthExceptionCode.lockoutPermanent,
+  'NegativeButton': AuthExceptionCode.negativeButton,
 };
 
 class AndroidPromptInfo {
@@ -163,15 +169,13 @@ class SecurityStorage {
             error,
             stackTrace);
         if (error is PlatformException) {
-          if (error.code.startsWith('AuthError:')) {
-            return Future<T>.error(
-              AuthException(
-                _authErrorCodeMapping[error.code] ?? AuthExceptionCode.unknown,
-                error.message,
-              ),
-              stackTrace,
-            );
-          }
+          return Future<T>.error(
+            AuthException(
+              _authErrorCodeMapping[error.code] ?? AuthExceptionCode.unknown,
+              error.message,
+            ),
+            stackTrace,
+          );
         }
         return Future<T>.error(error, stackTrace);
       });
