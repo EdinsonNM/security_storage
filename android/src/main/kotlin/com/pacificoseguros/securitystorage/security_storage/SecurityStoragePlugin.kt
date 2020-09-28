@@ -231,6 +231,7 @@ public class SecurityStoragePlugin: FlutterPlugin, MethodCallHandler, ActivityAw
         }
       })
     }
+    
   }
 
   private fun authenticateToDecrypt(secretKeyName: String, onError: ErrorCallback) {
