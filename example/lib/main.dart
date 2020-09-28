@@ -70,6 +70,13 @@ class _MyAppState extends State<MyApp> {
                     ])),
                 RaisedButton(
                   onPressed: () async {
+                    var result = await SecurityStorage.canAuthenticate();
+                    _displaySnackBar(context, result.toString());
+                  },
+                  child: Text('canAuthenticate'),
+                ),
+                RaisedButton(
+                  onPressed: () async {
                     if (keyController.value.text.isNotEmpty) {
                       var name = keyController.value.text;
                       var storage = await SecurityStorage.init(name,
@@ -85,9 +92,14 @@ class _MyAppState extends State<MyApp> {
                   onPressed: () async {
                     if (_formKey.currentState.validate()) {
                       var name = keyController.value.text;
-                      await securityStorages[name].write(
-                          keyController.value.text, valueController.value.text);
-                      _displaySnackBar(context, 'Guardando data');
+                      try {
+                        await securityStorages[name].write(
+                            keyController.value.text,
+                            valueController.value.text);
+                        _displaySnackBar(context, 'Guardando data');
+                      } catch (e) {
+                        _displaySnackBar(context, e.code.toString());
+                      }
                     }
                   },
                   child: Text('guardar'),
@@ -96,9 +108,13 @@ class _MyAppState extends State<MyApp> {
                   onPressed: () async {
                     if (keyController.value.text.isNotEmpty) {
                       var name = keyController.value.text;
-                      var value = await securityStorages[name]
-                          .read(keyController.value.text);
-                      _displaySnackBar(context, "El valor es: $value");
+                      try {
+                        var value = await securityStorages[name]
+                            .read(keyController.value.text);
+                        _displaySnackBar(context, "El valor es: $value");
+                      } catch (e) {
+                        _displaySnackBar(context, e.code.toString());
+                      }
                     }
                   },
                   child: Text('Leer'),
@@ -107,10 +123,14 @@ class _MyAppState extends State<MyApp> {
                   onPressed: () async {
                     if (keyController.value.text.isNotEmpty) {
                       var name = keyController.value.text;
-                      await securityStorages[name]
-                          .delete(keyController.value.text);
-                      _displaySnackBar(
-                          context, "El valor es: $name fue eliminado");
+                      try {
+                        await securityStorages[name]
+                            .delete(keyController.value.text);
+                        _displaySnackBar(
+                            context, "El valor es: $name fue eliminado");
+                      } catch (e) {
+                        _displaySnackBar(context, e.code.toString());
+                      }
                     }
                   },
                   child: Text('Eliminar'),
