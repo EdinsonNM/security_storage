@@ -33,6 +33,7 @@ enum AuthExceptionCode {
   negativeButton,
   lockout,
   lockoutPermanent
+  failed
 }
 
 class AuthException implements Exception {
@@ -53,6 +54,7 @@ const _authErrorCodeMapping = {
   'Lockout': AuthExceptionCode.lockout,
   'LockoutPermanent': AuthExceptionCode.lockoutPermanent,
   'NegativeButton': AuthExceptionCode.negativeButton,
+  'Failed': AuthExceptionCode.failed
 };
 
 class AndroidPromptInfo {
