@@ -1,3 +1,10 @@
+## 0.0.6
+
+* refactor methods read,write, delete
+## 0.0.5
+
+* fix android x errors
+
 ## 0.0.4
 
 * Add error codes for exceptions
