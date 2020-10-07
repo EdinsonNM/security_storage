@@ -93,11 +93,11 @@ class _MyAppState extends State<MyApp> {
                     if (_formKey.currentState.validate()) {
                       var name = keyController.value.text;
                       try {
-                        await securityStorages[name].write(
-                            keyController.value.text,
-                            valueController.value.text);
+                        await securityStorages[name]
+                            .write(valueController.value.text);
                         _displaySnackBar(context, 'Guardando data');
                       } catch (e) {
+                        print(e);
                         _displaySnackBar(context, e.code.toString());
                       }
                     }
@@ -109,8 +109,7 @@ class _MyAppState extends State<MyApp> {
                     if (keyController.value.text.isNotEmpty) {
                       var name = keyController.value.text;
                       try {
-                        var value = await securityStorages[name]
-                            .read(keyController.value.text);
+                        var value = await securityStorages[name].read();
                         _displaySnackBar(context, "El valor es: $value");
                       } catch (e) {
                         _displaySnackBar(context, e.code.toString());
@@ -124,8 +123,7 @@ class _MyAppState extends State<MyApp> {
                     if (keyController.value.text.isNotEmpty) {
                       var name = keyController.value.text;
                       try {
-                        await securityStorages[name]
-                            .delete(keyController.value.text);
+                        await securityStorages[name].delete();
                         _displaySnackBar(
                             context, "El valor es: $name fue eliminado");
                       } catch (e) {

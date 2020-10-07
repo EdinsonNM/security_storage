@@ -143,21 +143,21 @@ class SecurityStorage {
     return null;
   }
 
-  Future<String> read(String name) =>
+  Future<String> read() =>
       _transformErrors(_channel.invokeMethod<String>('read', <String, dynamic>{
-        'name': name,
+        'name': this.name,
         'androidPromptInfo': androidPromptInfo._toJson()
       }));
 
-  Future<bool> delete(String name) =>
+  Future<bool> delete() =>
       _transformErrors(_channel.invokeMethod<bool>('delete', <String, dynamic>{
-        'name': name,
+        'name': this.name,
         'androidPromptInfo': androidPromptInfo._toJson()
       }));
 
-  Future<void> write(String name, String content) =>
+  Future<void> write(String content) =>
       _transformErrors(_channel.invokeMethod('write', <String, dynamic>{
-        'name': name,
+        'name': this.name,
         'content': content,
         'androidPromptInfo': androidPromptInfo._toJson()
       }));
