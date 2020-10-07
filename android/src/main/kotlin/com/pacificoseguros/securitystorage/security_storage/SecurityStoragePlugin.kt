@@ -263,15 +263,21 @@ public class SecurityStoragePlugin: FlutterPlugin, MethodCallHandler, ActivityAw
 
       var initializationVector: ByteArray? = storageItems[secretKeyName]?.encryptedData?.initializationVector
       var options = storageItems[secretKeyName]?.options
+      if(initializationVector!=null) {
+        cryptographyManager.getInitializedCipherForDecryption(secretKeyName, initializationVector, options!!, {
+          biometricPrompt.authenticate(promptInfo, BiometricPrompt.CryptoObject(it))
+        }, {
+          Log.d(TAG, it.message)
+          ui(onError) {
+            onError(AuthenticationErrorInfo(AuthenticationError.KeyPermanentlyInvalidated, it.message.toString(), it.cause!!.message))
+          }
+        })
 
-      cryptographyManager.getInitializedCipherForDecryption(secretKeyName, initializationVector, options!!, {
-        biometricPrompt.authenticate(promptInfo, BiometricPrompt.CryptoObject(it))
-      }, {
-        Log.d(TAG, it.message)
+      }else{
         ui(onError) {
-          onError(AuthenticationErrorInfo(AuthenticationError.KeyPermanentlyInvalidated, it.message.toString(), it.cause!!.message))
+          onError(AuthenticationErrorInfo(AuthenticationError.Failed, "the key is not configured",""))
         }
-      })
+      }
 
     }
   }
