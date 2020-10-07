@@ -1,3 +1,6 @@
+## 0.0.7
+
+* update readme
 ## 0.0.6
 
 * refactor methods read,write, delete
