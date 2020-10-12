@@ -1,3 +1,6 @@
+## 0.0.8
+
+* addd exception codes error
 ## 0.0.7
 
 * update readme
