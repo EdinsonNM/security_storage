@@ -159,7 +159,7 @@ public class SecurityStoragePlugin: FlutterPlugin, MethodCallHandler, ActivityAw
         withStorage {
           promptInfo = createPromptInfo(getAndroidPromptInfo())
           biometricPrompt = createBiometricPrompt({
-            storageItems.remove(name)
+
             cryptographyManager.removeStore(name)
             result.success(true)
           }, {
