@@ -105,7 +105,7 @@ public class SecurityStoragePlugin: FlutterPlugin, MethodCallHandler, ActivityAw
     fun withStorage(cb: StorageItem.() -> Unit) {
       val name = getName()
       storageItems[name]?.apply(cb) ?: return {
-        result.error("Storage $name was not initialized.", null, null)
+        result.error(AuthenticationError.NotInitialized.toString(), "Storage $name was not initialized.", null)
       }()
     }
     when(call.method){
@@ -353,6 +353,7 @@ enum class AuthenticationError(val code: Int) {
   Unknown(-1),
   /** Authentication valid, but unknown */
   Failed(-2),
+  NotInitialized(-4)
   ;
 
   companion object {
