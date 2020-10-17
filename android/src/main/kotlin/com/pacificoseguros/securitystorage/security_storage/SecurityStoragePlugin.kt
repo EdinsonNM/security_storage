@@ -140,34 +140,44 @@ public class SecurityStoragePlugin: FlutterPlugin, MethodCallHandler, ActivityAw
       "read" -> {
         val name = getName()
         withStorage {
-          promptInfo = createPromptInfo(getAndroidPromptInfo())
-          biometricPrompt = createBiometricPrompt({
-            processDataDecrypt(name,it.cryptoObject){ data ->
-              result.success(data)
-            }
-          }, {
+          if(exists()){
+            promptInfo = createPromptInfo(getAndroidPromptInfo())
+            biometricPrompt = createBiometricPrompt({
+              processDataDecrypt(name,it.cryptoObject){ data ->
+                result.success(data)
+              }
+            }, {
 
-            result.error(it.error.toString(), it.message.toString(), it.errorDetails)
-          })
-          authenticateToDecrypt(getName()) {
-            result.error(it.error.toString(), it.message.toString(), it.errorDetails)
+              result.error(it.error.toString(), it.message.toString(), it.errorDetails)
+            })
+            authenticateToDecrypt(getName()) {
+              result.error(it.error.toString(), it.message.toString(), it.errorDetails)
+            }
+          }else{
+            result.success(null);
           }
+
         }
       }
       "delete"-> {
         val name = getName()
         withStorage {
-          promptInfo = createPromptInfo(getAndroidPromptInfo())
-          biometricPrompt = createBiometricPrompt({
+          if(exists()){
+            promptInfo = createPromptInfo(getAndroidPromptInfo())
+            biometricPrompt = createBiometricPrompt({
 
-            cryptographyManager.removeStore(name)
-            result.success(true)
-          }, {
-            result.error(it.error.toString(), it.message.toString(), it.errorDetails)
-          })
-          authenticateToRemove(name){
-            result.error(it.error.toString(), it.message.toString(), it.errorDetails)
+              cryptographyManager.removeStore(name)
+              result.success(true)
+            }, {
+              result.error(it.error.toString(), it.message.toString(), it.errorDetails)
+            })
+            authenticateToRemove(name){
+              result.error(it.error.toString(), it.message.toString(), it.errorDetails)
+            }
+          }else{
+            result.success(false);
           }
+
         }
       }
       else -> result.notImplemented()
@@ -398,6 +408,9 @@ data class StorageItem(
         var encryptedData: EncryptedData? = null
 ){
   constructor(name: String, options: InitOptions):this(name, options, null)
+  fun exists(): Boolean {
+    return (this.options!==null && this.encryptedData!==null);
+  }
 }
 
 enum class CanAuthenticateResponse(val code: Int) {
