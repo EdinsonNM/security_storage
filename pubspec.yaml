@@ -1,6 +1,6 @@
 name: security_storage
 description: A new flutter plugin project, for authentication with biometrics.
-version: 0.0.8
+version: 0.0.9
 author: Edinson Nuñez More<nmedinson@gmail.com>
 homepage: https://github.com/EdinsonNM/security_storage.git
 
