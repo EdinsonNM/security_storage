@@ -36,3 +36,9 @@ class MainActivity: FlutterFragmentActivity() {
     }
 }
 ```
+Methods | Description
+--- | --- 
+init | initialize the value to write
+read | read safe value from keystore
+write | write a safe value to the keystore
+delete | remove a safe value from the keystore

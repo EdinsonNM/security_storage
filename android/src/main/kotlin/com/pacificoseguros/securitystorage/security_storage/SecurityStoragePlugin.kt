@@ -105,7 +105,7 @@ public class SecurityStoragePlugin: FlutterPlugin, MethodCallHandler, ActivityAw
     fun withStorage(cb: StorageItem.() -> Unit) {
       val name = getName()
       storageItems[name]?.apply(cb) ?: return {
-        result.error("Storage $name was not initialized.", null, null)
+        result.error(AuthenticationError.NotInitialized.toString(), "Storage $name was not initialized.", null)
       }()
     }
     when(call.method){
@@ -140,34 +140,44 @@ public class SecurityStoragePlugin: FlutterPlugin, MethodCallHandler, ActivityAw
       "read" -> {
         val name = getName()
         withStorage {
-          promptInfo = createPromptInfo(getAndroidPromptInfo())
-          biometricPrompt = createBiometricPrompt({
-            processDataDecrypt(name,it.cryptoObject){ data ->
-              result.success(data)
-            }
-          }, {
+          if(exists()){
+            promptInfo = createPromptInfo(getAndroidPromptInfo())
+            biometricPrompt = createBiometricPrompt({
+              processDataDecrypt(name,it.cryptoObject){ data ->
+                result.success(data)
+              }
+            }, {
 
-            result.error(it.error.toString(), it.message.toString(), it.errorDetails)
-          })
-          authenticateToDecrypt(getName()) {
-            result.error(it.error.toString(), it.message.toString(), it.errorDetails)
+              result.error(it.error.toString(), it.message.toString(), it.errorDetails)
+            })
+            authenticateToDecrypt(getName()) {
+              result.error(it.error.toString(), it.message.toString(), it.errorDetails)
+            }
+          }else{
+            result.success(null);
           }
+
         }
       }
       "delete"-> {
         val name = getName()
         withStorage {
-          promptInfo = createPromptInfo(getAndroidPromptInfo())
-          biometricPrompt = createBiometricPrompt({
-            storageItems.remove(name)
-            cryptographyManager.removeStore(name)
-            result.success(true)
-          }, {
-            result.error(it.error.toString(), it.message.toString(), it.errorDetails)
-          })
-          authenticateToRemove(name){
-            result.error(it.error.toString(), it.message.toString(), it.errorDetails)
+          if(exists()){
+            promptInfo = createPromptInfo(getAndroidPromptInfo())
+            biometricPrompt = createBiometricPrompt({
+
+              cryptographyManager.removeStore(name)
+              result.success(true)
+            }, {
+              result.error(it.error.toString(), it.message.toString(), it.errorDetails)
+            })
+            authenticateToRemove(name){
+              result.error(it.error.toString(), it.message.toString(), it.errorDetails)
+            }
+          }else{
+            result.success(false);
           }
+
         }
       }
       else -> result.notImplemented()
@@ -263,15 +273,21 @@ public class SecurityStoragePlugin: FlutterPlugin, MethodCallHandler, ActivityAw
 
       var initializationVector: ByteArray? = storageItems[secretKeyName]?.encryptedData?.initializationVector
       var options = storageItems[secretKeyName]?.options
+      if(initializationVector!=null) {
+        cryptographyManager.getInitializedCipherForDecryption(secretKeyName, initializationVector, options!!, {
+          biometricPrompt.authenticate(promptInfo, BiometricPrompt.CryptoObject(it))
+        }, {
+          Log.d(TAG, it.message)
+          ui(onError) {
+            onError(AuthenticationErrorInfo(AuthenticationError.KeyPermanentlyInvalidated, it.message.toString(), it.cause!!.message))
+          }
+        })
 
-      cryptographyManager.getInitializedCipherForDecryption(secretKeyName, initializationVector, options!!, {
-        biometricPrompt.authenticate(promptInfo, BiometricPrompt.CryptoObject(it))
-      }, {
-        Log.d(TAG, it.message)
+      }else{
         ui(onError) {
-          onError(AuthenticationErrorInfo(AuthenticationError.KeyPermanentlyInvalidated, it.message.toString(), it.cause!!.message))
+          onError(AuthenticationErrorInfo(AuthenticationError.Failed, "the key is not configured",""))
         }
-      })
+      }
 
     }
   }
@@ -347,6 +363,7 @@ enum class AuthenticationError(val code: Int) {
   Unknown(-1),
   /** Authentication valid, but unknown */
   Failed(-2),
+  NotInitialized(-4)
   ;
 
   companion object {
@@ -391,6 +408,9 @@ data class StorageItem(
         var encryptedData: EncryptedData? = null
 ){
   constructor(name: String, options: InitOptions):this(name, options, null)
+  fun exists(): Boolean {
+    return (this.options!==null && this.encryptedData!==null);
+  }
 }
 
 enum class CanAuthenticateResponse(val code: Int) {

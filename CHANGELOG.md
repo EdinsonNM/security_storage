@@ -1,3 +1,9 @@
+## 0.0.9
+
+* Fix error in delete key
+## 0.0.8
+
+* add exception codes error
 ## 0.0.7
 
 * update readme
