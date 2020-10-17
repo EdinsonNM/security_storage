@@ -1,3 +1,6 @@
+## 0.0.10
+
+* Update readme
 ## 0.0.9
 
 * Fix error in delete key
