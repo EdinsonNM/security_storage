@@ -282,7 +282,7 @@ public class SecurityStoragePlugin: FlutterPlugin, MethodCallHandler, ActivityAw
           Log.d(TAG, it.message)
           ui(onError) {
             cryptographyManager.removeStore(secretKeyName)
-            onError(AuthenticationErrorInfo(AuthenticationError.KeyPermanentlyInvalidated, it.message.toString(), it.cause!!.message))
+            onError(AuthenticationErrorInfo(AuthenticationError.KeyPermanentlyInvalidated, it.message.toString()))
           }
         })
 
