@@ -1,3 +1,6 @@
+## 1.0.0
+* Fix Remove Key permanently invalidated
+
 ## 0.0.10
 
 * Update readme
