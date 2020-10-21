@@ -119,6 +119,11 @@ public class SecurityStoragePlugin: FlutterPlugin, MethodCallHandler, ActivityAw
 
 
         storageItems[getName()] = StorageItem(getName(), options)
+
+        var prefs = PreferenceHelper.customPrefs(this.context, "security-storage")
+        val json: String = prefs[getName()]
+        val gson = Gson()
+        storageItems[getName()]!!.encryptedData = gson.fromJson(json, EncryptedData::class.java)
       }
       "write" -> {
         withStorage {
@@ -239,7 +244,8 @@ public class SecurityStoragePlugin: FlutterPlugin, MethodCallHandler, ActivityAw
       }, {
         Log.d(TAG, it.message)
         ui(onError) {
-          onError(AuthenticationErrorInfo(AuthenticationError.KeyPermanentlyInvalidated, it.message.toString(), it.cause!!.message))
+          cryptographyManager.removeStore(secretKeyName)
+          onError(AuthenticationErrorInfo(AuthenticationError.KeyPermanentlyInvalidated, it.message.toString()))
         }
       })
     }
@@ -261,9 +267,11 @@ public class SecurityStoragePlugin: FlutterPlugin, MethodCallHandler, ActivityAw
         biometricPrompt.authenticate(promptInfo, BiometricPrompt.CryptoObject(it))
       }, {
         Log.d(TAG, it.message)
-        ui(onError) {
-          onError(AuthenticationErrorInfo(AuthenticationError.KeyPermanentlyInvalidated, it.message.toString(), it.cause!!.message))
+        ui(onError){
+          onError(AuthenticationErrorInfo(AuthenticationError.KeyPermanentlyInvalidated, it.message.toString()))
         }
+
+
       })
 
     }
@@ -279,7 +287,8 @@ public class SecurityStoragePlugin: FlutterPlugin, MethodCallHandler, ActivityAw
         }, {
           Log.d(TAG, it.message)
           ui(onError) {
-            onError(AuthenticationErrorInfo(AuthenticationError.KeyPermanentlyInvalidated, it.message.toString(), it.cause!!.message))
+            cryptographyManager.removeStore(secretKeyName)
+            onError(AuthenticationErrorInfo(AuthenticationError.KeyPermanentlyInvalidated, it.message.toString()))
           }
         })
 
@@ -300,6 +309,7 @@ public class SecurityStoragePlugin: FlutterPlugin, MethodCallHandler, ActivityAw
     val gson = Gson()
     val json: String = gson.toJson(encryptedData)
     var prefs = PreferenceHelper.customPrefs(this.context, "security-storage")
+    prefs.edit()
     prefs[secretKeyName] = json
 
     val data =  String(encryptedData.ciphertext, Charset.forName("UTF-8"))
