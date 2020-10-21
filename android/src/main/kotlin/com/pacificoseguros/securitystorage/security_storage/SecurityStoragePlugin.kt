@@ -2,9 +2,9 @@ package com.pacificoseguros.securitystorage.security_storage
 
 import android.app.Activity
 import android.content.Context
-import android.hardware.fingerprint.FingerprintManager
 import android.os.Handler
 import android.os.Looper
+import android.security.keystore.KeyPermanentlyInvalidatedException
 import android.util.Log
 import androidx.annotation.NonNull
 import androidx.biometric.BiometricManager
@@ -25,6 +25,7 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry.Registrar
 import java.nio.charset.Charset
+import java.security.InvalidAlgorithmParameterException
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -38,7 +39,6 @@ public class SecurityStoragePlugin: FlutterPlugin, MethodCallHandler, ActivityAw
   private lateinit var channel : MethodChannel
   private lateinit var context: Context
   private lateinit var activity: FragmentActivity
-  private lateinit var fingerprintMgr: FingerprintManager
   private lateinit var cryptographyManager: CryptographyManager
   private lateinit var biometricPrompt: BiometricPrompt
   private lateinit var promptInfo: BiometricPrompt.PromptInfo
@@ -68,7 +68,6 @@ public class SecurityStoragePlugin: FlutterPlugin, MethodCallHandler, ActivityAw
       val channel = MethodChannel(registrar.messenger(), "security_storage")
       channel.setMethodCallHandler(SecurityStoragePlugin())
       SecurityStoragePlugin().apply {
-        updateFingerPrintManager(registrar.activity().getSystemService(FingerprintManager::class.java))
         print("initialize plugin")
       }
     }
@@ -193,9 +192,7 @@ public class SecurityStoragePlugin: FlutterPlugin, MethodCallHandler, ActivityAw
     return CanAuthenticateResponse.values().firstOrNull { it.code == response }
             ?: throw Exception("Unknown response code {$response} (available: ${CanAuthenticateResponse.values()}")
   }
-  fun updateFingerPrintManager(fingerprintMgr: FingerprintManager){
-    this.fingerprintMgr = fingerprintMgr
-  }
+
   private fun createBiometricPrompt( onSuccess: (result: BiometricPrompt.AuthenticationResult) -> Unit, onError: ErrorCallback, data: String = ""): BiometricPrompt {
     val callback = object : BiometricPrompt.AuthenticationCallback() {
       override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
@@ -242,10 +239,17 @@ public class SecurityStoragePlugin: FlutterPlugin, MethodCallHandler, ActivityAw
         biometricPrompt.authenticate(promptInfo, BiometricPrompt.CryptoObject(it))
 
       }, {
-        Log.d(TAG, it.message)
-        ui(onError) {
+        Log.d(TAG, it.message.toString())
+       var errorType= AuthenticationError.Unknown
+        if(it is KeyPermanentlyInvalidatedException){
           cryptographyManager.removeStore(secretKeyName)
-          onError(AuthenticationErrorInfo(AuthenticationError.KeyPermanentlyInvalidated, it.message.toString()))
+          errorType = AuthenticationError.KeyPermanentlyInvalidated
+        }
+        if(it is InvalidAlgorithmParameterException){
+          errorType = AuthenticationError.NoBiometricEnrolled
+        }
+        ui(onError) {
+          onError(AuthenticationErrorInfo(errorType, it.message.toString()))
         }
       })
     }
@@ -266,9 +270,16 @@ public class SecurityStoragePlugin: FlutterPlugin, MethodCallHandler, ActivityAw
       cryptographyManager.getInitializedCipherForDecryption(secretKeyName, initializationVector, options!!, {
         biometricPrompt.authenticate(promptInfo, BiometricPrompt.CryptoObject(it))
       }, {
-        Log.d(TAG, it.message)
+        Log.d(TAG, it.message.toString())
+        var errorType= AuthenticationError.Unknown
+        if(it is KeyPermanentlyInvalidatedException){
+          errorType = AuthenticationError.KeyPermanentlyInvalidated
+        }
+        if(it is InvalidAlgorithmParameterException){
+          errorType = AuthenticationError.NoBiometricEnrolled
+        }
         ui(onError){
-          onError(AuthenticationErrorInfo(AuthenticationError.KeyPermanentlyInvalidated, it.message.toString()))
+          onError(AuthenticationErrorInfo(errorType, it.message.toString()))
         }
 
 
@@ -285,10 +296,17 @@ public class SecurityStoragePlugin: FlutterPlugin, MethodCallHandler, ActivityAw
         cryptographyManager.getInitializedCipherForDecryption(secretKeyName, initializationVector, options!!, {
           biometricPrompt.authenticate(promptInfo, BiometricPrompt.CryptoObject(it))
         }, {
-          Log.d(TAG, it.message)
-          ui(onError) {
+          Log.d(TAG, it.message.toString())
+          var errorType= AuthenticationError.Unknown
+          if(it is KeyPermanentlyInvalidatedException){
             cryptographyManager.removeStore(secretKeyName)
-            onError(AuthenticationErrorInfo(AuthenticationError.KeyPermanentlyInvalidated, it.message.toString()))
+            errorType = AuthenticationError.KeyPermanentlyInvalidated
+          }
+          if(it is InvalidAlgorithmParameterException){
+            errorType = AuthenticationError.NoBiometricEnrolled
+          }
+          ui(onError) {
+            onError(AuthenticationErrorInfo(errorType, it.message.toString()))
           }
         })
 
@@ -336,7 +354,6 @@ public class SecurityStoragePlugin: FlutterPlugin, MethodCallHandler, ActivityAw
 
   override fun onAttachedToActivity(binding: ActivityPluginBinding) {
     updateAttachedActivity(binding.activity)
-    updateFingerPrintManager(binding.activity.getSystemService(FingerprintManager::class.java))
   }
   private fun updateAttachedActivity(activity: Activity) {
     if (activity !is FragmentActivity) {
@@ -373,7 +390,8 @@ enum class AuthenticationError(val code: Int) {
   Unknown(-1),
   /** Authentication valid, but unknown */
   Failed(-2),
-  NotInitialized(-4)
+  NotInitialized(-4),
+  NoBiometricEnrolled(-5)
   ;
 
   companion object {

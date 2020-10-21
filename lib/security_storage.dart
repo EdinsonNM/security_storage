@@ -35,7 +35,8 @@ enum AuthExceptionCode {
   lockoutPermanent,
   failed,
   notInitialized,
-  keyPermanentlyInvalidated
+  keyPermanentlyInvalidated,
+  noBiometricEnrolled
 }
 
 class AuthException implements Exception {
@@ -58,7 +59,8 @@ const _authErrorCodeMapping = {
   'NegativeButton': AuthExceptionCode.negativeButton,
   'Failed': AuthExceptionCode.failed,
   'NotInitialized': AuthExceptionCode.notInitialized,
-  'KeyPermanentlyInvalidated': AuthExceptionCode.keyPermanentlyInvalidated
+  'KeyPermanentlyInvalidated': AuthExceptionCode.keyPermanentlyInvalidated,
+  'NoBiometricEnrolled': AuthExceptionCode.noBiometricEnrolled
 };
 
 class AndroidPromptInfo {

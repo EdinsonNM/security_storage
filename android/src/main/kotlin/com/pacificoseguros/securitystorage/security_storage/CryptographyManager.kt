@@ -5,7 +5,9 @@ import android.security.keystore.KeyPermanentlyInvalidatedException
 import android.security.keystore.KeyProperties
 import android.util.Log
 import com.squareup.moshi.JsonClass
+import java.lang.Exception
 import java.nio.charset.Charset
+import java.security.InvalidAlgorithmParameterException
 import java.security.KeyStore
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
@@ -26,13 +28,13 @@ interface CryptographyManager {
      * This method first gets or generates an instance of SecretKey and then initializes the Cipher
      * with the key. The secret key uses [ENCRYPT_MODE][Cipher.ENCRYPT_MODE] is used.
      */
-    fun getInitializedCipherForEncryption(keyName: String,options:InitOptions, onSuccess: (Cipher)-> Unit, onError : (KeyPermanentlyInvalidatedException)-> Unit): Unit
+    fun getInitializedCipherForEncryption(keyName: String,options:InitOptions, onSuccess: (Cipher)-> Unit, onError : (Exception)-> Unit): Unit
 
     /**
      * This method first gets or generates an instance of SecretKey and then initializes the Cipher
      * with the key. The secret key uses [DECRYPT_MODE][Cipher.DECRYPT_MODE] is used.
      */
-    fun getInitializedCipherForDecryption(keyName: String, initializationVector: ByteArray?, options:InitOptions, onSuccess: (Cipher)-> Unit, onError : (KeyPermanentlyInvalidatedException)-> Unit): Unit
+    fun getInitializedCipherForDecryption(keyName: String, initializationVector: ByteArray?, options:InitOptions, onSuccess: (Cipher)-> Unit, onError : (Exception)-> Unit): Unit
 
     /**
      * The Cipher created with [getInitializedCipherForEncryption] is used here
@@ -58,7 +60,7 @@ private class CryptographyManagerImpl : CryptographyManager {
     private val ENCRYPTION_BLOCK_MODE = KeyProperties.BLOCK_MODE_GCM
     private val ENCRYPTION_PADDING = KeyProperties.ENCRYPTION_PADDING_NONE
     private val ENCRYPTION_ALGORITHM = KeyProperties.KEY_ALGORITHM_AES
-    override fun getInitializedCipherForEncryption(keyName: String, options:InitOptions , onSuccess: (Cipher)-> Unit, onError : (KeyPermanentlyInvalidatedException)-> Unit) {
+    override fun getInitializedCipherForEncryption(keyName: String, options:InitOptions , onSuccess: (Cipher)-> Unit, onError : (Exception)-> Unit) {
 
         try {
             val cipher = getCipher()
@@ -68,11 +70,13 @@ private class CryptographyManagerImpl : CryptographyManager {
         }catch (e: KeyPermanentlyInvalidatedException)
         {
             onError(e)
-            //removeStore(keyName)
+        }
+        catch (e:InvalidAlgorithmParameterException){
+            onError(e)
         }
     }
 
-    override fun getInitializedCipherForDecryption(keyName: String, initializationVector: ByteArray?, options:InitOptions , onSuccess: (Cipher)-> Unit, onError:(KeyPermanentlyInvalidatedException)->Unit) {
+    override fun getInitializedCipherForDecryption(keyName: String, initializationVector: ByteArray?, options:InitOptions , onSuccess: (Cipher)-> Unit, onError:(Exception)->Unit) {
         try {
             val cipher = getCipher()
             val secretKey = getOrCreateSecretKey(keyName, options)
@@ -81,7 +85,9 @@ private class CryptographyManagerImpl : CryptographyManager {
         }catch (e: KeyPermanentlyInvalidatedException)
         {
             onError(e)
-            //removeStore(keyName)
+        }
+        catch (e:InvalidAlgorithmParameterException){
+            onError(e)
         }
     }
 
