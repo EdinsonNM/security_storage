@@ -1,3 +1,6 @@
+## 1.0.1
+* Fix error when fingeprints is empty
+
 ## 1.0.0
 * Fix Remove Key permanently invalidated
 
