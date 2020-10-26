@@ -167,17 +167,10 @@ public class SecurityStoragePlugin: FlutterPlugin, MethodCallHandler, ActivityAw
         val name = getName()
         withStorage {
           if(exists()){
-            promptInfo = createPromptInfo(getAndroidPromptInfo())
-            biometricPrompt = createBiometricPrompt({
+            storageItems.remove(name)
+            cryptographyManager.removeStore(name)
+            result.success(true);
 
-              cryptographyManager.removeStore(name)
-              result.success(true)
-            }, {
-              result.error(it.error.toString(), it.message.toString(), it.errorDetails)
-            })
-            authenticateToRemove(name){
-              result.error(it.error.toString(), it.message.toString(), it.errorDetails)
-            }
           }else{
             result.success(false);
           }
