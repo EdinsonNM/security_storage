@@ -23,7 +23,7 @@ rootProject.allprojects {
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-
+apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 29
 
@@ -47,4 +47,5 @@ dependencies {
     implementation "com.squareup.moshi:moshi:1.9.3"
     implementation("com.squareup.moshi:moshi-kotlin:1.9.3")
     implementation 'com.google.code.gson:gson:2.8.6'
+    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.11.0")
 }
