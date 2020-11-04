@@ -8,3 +8,6 @@
 -keepclassmembers class * extends com.google.crypto.tink.shaded.protobuf.GeneratedMessageLite {
   <fields>;
 }
+-keepclassmembers class * {
+    @com.squareup.moshi.fromJsonValue <methods>;
+}
