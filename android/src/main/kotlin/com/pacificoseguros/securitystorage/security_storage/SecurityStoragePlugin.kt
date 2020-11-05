@@ -142,42 +142,46 @@ public class SecurityStoragePlugin: FlutterPlugin, MethodCallHandler, ActivityAw
         }
       }
       "read" -> {
-        val name = getName()
-        withStorage {
-          if(exists()){
-            promptInfo = createPromptInfo(getAndroidPromptInfo())
-            biometricPrompt = createBiometricPrompt({
-              processDataDecrypt(name,it.cryptoObject){ data ->
-                result.success(data)
-              }
-            }, {
 
-              result.error(it.error.toString(), it.message.toString(), it.errorDetails)
-            })
-            authenticateToDecrypt(getName()) {
-              result.error(it.error.toString(), it.message.toString(), it.errorDetails)
+        val name = getName()
+
+          var prefs = PreferenceHelper.customPrefs(this.context, "security-storage")
+          
+          if(prefs.contains(name)){
+            withStorage {
+              if(exists()){
+                promptInfo = createPromptInfo(getAndroidPromptInfo())
+                biometricPrompt = createBiometricPrompt({
+                  processDataDecrypt(name,it.cryptoObject){ data ->
+                    result.success(data)
+                  }
+                }, {
+
+                  result.error(it.error.toString(), it.message.toString(), it.errorDetails)
+                })
+                authenticateToDecrypt(getName()) {
+                  result.error(it.error.toString(), it.message.toString(), it.errorDetails)
+                }
+              }else{
+                result.success(null);
+              }
+
             }
           }else{
             result.success(null);
           }
-
-        }
       }
       "delete"-> {
         val name = getName()
+        var prefs = PreferenceHelper.customPrefs(this.context, "security-storage")
+
         withStorage {
           if(exists()){
-            promptInfo = createPromptInfo(getAndroidPromptInfo())
-            biometricPrompt = createBiometricPrompt({
+            prefs.edit().remove(name).commit();
+            storageItems.remove(name)
+            cryptographyManager.removeStore(name)
+            result.success(true);
 
-              cryptographyManager.removeStore(name)
-              result.success(true)
-            }, {
-              result.error(it.error.toString(), it.message.toString(), it.errorDetails)
-            })
-            authenticateToRemove(name){
-              result.error(it.error.toString(), it.message.toString(), it.errorDetails)
-            }
           }else{
             result.success(false);
           }
