@@ -167,7 +167,7 @@ public class SecurityStoragePlugin: FlutterPlugin, MethodCallHandler, ActivityAw
         val name = getName()
         withStorage {
           if(exists()){
-            storageItems.remove(name)
+            //storageItems.remove(name)
             cryptographyManager.removeStore(name)
             result.success(true);
 
