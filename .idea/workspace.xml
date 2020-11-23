@@ -20,21 +20,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2600a4d6-f608-408c-8001-622e5b12bcbf" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/Classes/Biometric.swift" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/Classes/BiometricAuth.swift" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/Classes/EnumsBiometric.swift" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/Classes/KeychainPasswordItem.swift" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/Classes/SecureStorage.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/security_storage.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/security_storage.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/android/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/example/android/gradle.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/security_storage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/security_storage.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[196e6b2b]" />
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="development" />
+        <entry key="$PROJECT_DIR$" value="alpha" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -50,12 +58,17 @@
     <property name="dart.analysis.tool.window.force.activate" value="false" />
     <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/ios/Classes" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
     <property name="settings.editor.selected.configurable" value="flutter.settings" />
     <property name="show.migrate.to.gradle.popup" value="false" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/ios/Classes" />
+    </key>
   </component>
   <component name="RunManager" selected="Flutter.example/lib/main.dart">
     <configuration name="main.dart" type="FlutterRunConfigurationType" factoryName="Flutter">
@@ -89,22 +102,30 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1878" height="14" key="GridCell.Tab.0.bottom" timestamp="1605244379674">
+    <state x="725" y="293" key="AndroidProcessChooserDialog" timestamp="1606113865838">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="14" key="GridCell.Tab.0.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1605244379674" />
-    <state width="1878" height="14" key="GridCell.Tab.0.center" timestamp="1605244379673">
+    <state x="725" y="293" key="AndroidProcessChooserDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1606113865838" />
+    <state width="644" height="466" key="DebuggerActiveHint" timestamp="1606110063095">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="14" key="GridCell.Tab.0.center/0.0.1920.1080@0.0.1920.1080" timestamp="1605244379673" />
-    <state width="1878" height="14" key="GridCell.Tab.0.left" timestamp="1605244379672">
+    <state width="644" height="466" key="DebuggerActiveHint/0.0.1920.1080@0.0.1920.1080" timestamp="1606110063095" />
+    <state width="1878" height="173" key="GridCell.Tab.0.bottom" timestamp="1606113559489">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="14" key="GridCell.Tab.0.left/0.0.1920.1080@0.0.1920.1080" timestamp="1605244379672" />
-    <state width="1878" height="14" key="GridCell.Tab.0.right" timestamp="1605244379673">
+    <state width="1878" height="173" key="GridCell.Tab.0.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1606113559489" />
+    <state width="1878" height="173" key="GridCell.Tab.0.center" timestamp="1606113559488">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="14" key="GridCell.Tab.0.right/0.0.1920.1080@0.0.1920.1080" timestamp="1605244379673" />
+    <state width="1878" height="173" key="GridCell.Tab.0.center/0.0.1920.1080@0.0.1920.1080" timestamp="1606113559488" />
+    <state width="1878" height="173" key="GridCell.Tab.0.left" timestamp="1606113559487">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1878" height="173" key="GridCell.Tab.0.left/0.0.1920.1080@0.0.1920.1080" timestamp="1606113559487" />
+    <state width="1878" height="173" key="GridCell.Tab.0.right" timestamp="1606113559488">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1878" height="173" key="GridCell.Tab.0.right/0.0.1920.1080@0.0.1920.1080" timestamp="1606113559488" />
     <state width="1878" height="268" key="GridCell.Tab.1.bottom" timestamp="1605220649667">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
@@ -130,5 +151,31 @@
     </state>
     <state x="560" y="392" key="com.intellij.ide.util.TipDialog/0.0.1792.1120@0.0.1792.1120" timestamp="1602392782336" />
     <state x="1075" y="491" key="com.intellij.ide.util.TipDialog/0.23.3440.1337/-1792.23.1792.1097@0.23.3440.1337" timestamp="1602956597989" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="Dart">
+          <url>file://$PROJECT_DIR$/example/lib/main.dart</url>
+          <line>94</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/android/src/main/kotlin/com/pacificoseguros/securitystorage/security_storage/SecurityStoragePlugin.kt</url>
+          <line>133</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/android/src/main/kotlin/com/pacificoseguros/securitystorage/security_storage/SecurityStoragePlugin.kt</url>
+          <line>127</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/android/src/main/kotlin/com/pacificoseguros/securitystorage/security_storage/SecurityStoragePlugin.kt</url>
+          <line>130</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

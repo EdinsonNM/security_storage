@@ -122,8 +122,13 @@ class SecurityStorage {
       var result = await _channel.invokeMethod<String>('canAuthenticate');
       print(result);
       return _canAuthenticateMapping[result];
+    }else{
+      var result = await _channel.invokeMethod<String>('canAuthenticate');
+      print(result);
+      return _canAuthenticateMapping[result];
     }
-    return CanAuthenticateResponse.unsupported;
+
+    //return CanAuthenticateResponse.unsupported;
   }
 
   static Future<SecurityStorage> init(
