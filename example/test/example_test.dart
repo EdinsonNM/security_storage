@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:example/example.dart';
+import 'package:security_storage_example/example.dart';
 
 void main() {
   const MethodChannel channel = MethodChannel('example');
