@@ -22,7 +22,7 @@ public class Biometric: NSObject {
     
     // MARK: UI Interface
     /*
-     This function return if Touch or Face ID is available
+     This function return if Touch or Face ID is available Policy
      */
     @objc public class func isBiometricAvailable() -> Bool {
         let touchMe = BiometricAuth()
@@ -77,9 +77,9 @@ public class Biometric: NSObject {
     @objc public class func savePasswordForService(password:String,
                                                    serviceName:String, _ success: @escaping () -> Void,_ errorMessagge: @escaping (String?) -> Void) {
         let touchMe = BiometricAuth()
-             touchMe.authenticateUser() { message in
-             if let message = message {
-                 errorMessagge(message)
+             touchMe.authenticateUser() { message,biometricPrompt in
+            if biometricPrompt != nil {
+                errorMessagge(biometricPrompt.map { $0.rawValue })
              } else {
                  do {
                             let passwordItem = KeychainPasswordItem(service: serviceName,
@@ -88,7 +88,7 @@ public class Biometric: NSObject {
                             try passwordItem.savePassword(password)
                             success()
                         }catch{
-                            errorMessagge(error.localizedDescription)
+                            errorMessagge(biometricPrompt.map { $0.rawValue })
                             
                         }
              }

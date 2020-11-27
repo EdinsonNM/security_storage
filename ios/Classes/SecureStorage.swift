@@ -29,6 +29,8 @@ public class SecureStorage: NSObject,Parceable {
         if Biometric.isBiometricAvailable() {
             return "Success"
         }else{
+           
+        //    self.present(alert, animated: true, completion: nil)
             return "ErrorUnsupported"
         }
 //        return self.toJson(result)
@@ -41,14 +43,9 @@ public class SecureStorage: NSObject,Parceable {
         Biometric.deletePassword(serviceName: data["name"]! as! String)
         return ""
     }
-    @objc public class func write(_ data:Dictionary<String, Any>) -> String {
-        Biometric.savePasswordForService(password: data["content"]! as! String, serviceName: data["name"]! as! String, {
-           
-        }, { error in
-            print(error?.description)
-            
-        })
-        return ""
+    @objc public class func write(_ data:Dictionary<String, Any>, _ success: @escaping () -> Void,_ errorMessagge: @escaping (String?) -> Void)  {
+        Biometric.savePasswordForService(password: data["content"]! as! String, serviceName: data["name"]! as! String, success, errorMessagge)
+        
     }
     @objc public class func initValues(_ data:String) {
         print(data)

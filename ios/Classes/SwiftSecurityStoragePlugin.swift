@@ -26,8 +26,13 @@ public class SwiftSecurityStoragePlugin: NSObject, FlutterPlugin {
             break;
         case "write":
             if let args = call.arguments as? Dictionary<String,Any> {
-                SecureStorage.write(args)
-                result("Success")
+                SecureStorage.write(args,{
+                    result("Success")
+                },{ biometricPrompt in
+                    result(FlutterError( code: biometricPrompt!,
+                                         message: "",
+                                         details: "" ))
+                })
             }
             break;
         case "init":
@@ -36,7 +41,26 @@ public class SwiftSecurityStoragePlugin: NSObject, FlutterPlugin {
             }
             break;
         case "canAuthenticate":
-            result(SecureStorage.canAuthenticate())
+            if SecureStorage.canAuthenticate() == "Success" {
+                result(SecureStorage.canAuthenticate())
+            }else{
+                let rootViewController = UIApplication.shared.keyWindow?.rootViewController
+                let alert = UIAlertController(title: "Mi Espacio Pacifico", message: "Cambiar la configuración de \nFace ID o Touch ID.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "ir a la configuración", style:  UIAlertAction.Style.default, handler: { action in
+                    if let url = URL(string: "App-Prefs:root=TOUCHID_PASSCODE") {
+                        result("ErrorUnsupported")
+                        UIApplication.shared.openURL(url)
+                        
+                    }
+                }))
+                alert.addAction(UIAlertAction(title: "Cerrar", style: UIAlertAction.Style.cancel, handler: { action in
+                    result("ErrorUnsupported")
+                    
+                }))
+
+                rootViewController?.present(alert, animated: true, completion: nil)
+            }
+            
             
             break;
         default:
@@ -44,3 +68,4 @@ public class SwiftSecurityStoragePlugin: NSObject, FlutterPlugin {
         }
     }
 }
+

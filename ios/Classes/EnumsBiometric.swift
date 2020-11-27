@@ -16,3 +16,15 @@ enum BiometryState {
     case notAvailable
     case locked
 }
+
+enum BiometricPrompt:String {
+    case ERROR_CANCELED = "UserCanceled"
+    case ERROR_TIMEOUT = "Timeout"
+    case ERROR_LOCKOUT = "Lockout"
+    case ERROR_LOCKOUT_PERMANENT = "LockoutPermanent"
+    case ERROR_NEGATIVE_BUTTON = "NegativeButton"
+    case ERROR_FAILED = "Failed"
+    case ERROR_NOT_INITIALIZED = "NotInitialized"
+    case ERROR_KEY_PERMANENTLY_INVALIDATED = "KeyPermanentlyInvalidated"
+    case ERROR_NOT_BIOMETRIC_ENROLLED = "NoBiometricEnrolled"
+}

@@ -49,14 +49,26 @@ class BiometricAuth: NSObject {
      
    }
    func canEvaluatePolicy() -> Bool {
-      let context = LAContext()
-     return context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
+    let touchMe = BiometricAuth()
+    return touchMe.biometricType() != .none
+//      let context = LAContext()
+//    if(context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)){
+//        if (context.biometryType == LABiometryType.faceID) {
+//                    return .faceID
+//                } else if (context.biometryType == LABiometryType.touchID) {
+//                    return .touchID
+//                } else {
+//                    return .notExist
+//                }
+//    }
+//    return .none
    }
 
 
-   func authenticateUser(completion: @escaping (String?) -> Void) {
-     guard canEvaluatePolicy() else {
-       completion("Touch ID not available")
+   func authenticateUser(completion: @escaping (String?,BiometricPrompt?) -> Void) {
+    guard canEvaluatePolicy()  else {
+//        let error:BiometricPrompt = nil
+        completion("Touch ID or Face not available",.ERROR_NEGATIVE_BUTTON)
        return
      }
      let context = LAContext()
@@ -68,32 +80,47 @@ class BiometricAuth: NSObject {
          DispatchQueue.main.async {
            // User authenticated successfully, take appropriate action
            BiometricAuth.saveAvailibilityApp(active: true);
-           completion(nil)
+           completion(nil,nil)
          }
        } else {
          BiometricAuth.saveAvailibilityApp(active: false);
          if #available(iOS 11.0, *) {
+            let biometricPrompt:BiometricPrompt
             switch evaluateError {
                    case LAError.authenticationFailed?:
-                     message = "There was a problem verifying your identity."
+                        message = "There was a problem verifying your identity."
+                        biometricPrompt = .ERROR_FAILED
+                    break
                    case LAError.userCancel?:
-                     message = "You pressed cancel."
+                        message = "You pressed cancel."
+                        biometricPrompt = .ERROR_CANCELED
+                    break
                    case LAError.userFallback?:
-                     message = "You pressed password."
+                        message = "You pressed password."
+                        biometricPrompt = .ERROR_CANCELED
+                    break
                    case LAError.biometryNotAvailable?:
-                     message = "Face ID/Touch ID is not available."
+                        message = "Face ID/Touch ID is not available."
+                        biometricPrompt = .ERROR_NEGATIVE_BUTTON
+                    break
                    case LAError.biometryNotEnrolled?:
-                     message = "Face ID/Touch ID is not set up."
+                        message = "Face ID/Touch ID is not set up."
+                        biometricPrompt = .ERROR_NOT_BIOMETRIC_ENROLLED
+                    break
                    case LAError.biometryLockout?:
-                     message = "Face ID/Touch ID is locked."
+                        message = "Face ID/Touch ID is locked."
+                        biometricPrompt = .ERROR_LOCKOUT
+                    break
                    default:
-                     message = "Face ID/Touch ID may not be configured"
+                        message = "Face ID/Touch ID may not be configured"
+                        biometricPrompt = .ERROR_NOT_BIOMETRIC_ENROLLED
+                    
                    }
                   
-                   completion(message)
+                   completion(message,biometricPrompt)
          } else {
              message = "Face ID/not available"
-             completion(message)
+            completion(message,BiometricPrompt.ERROR_NOT_BIOMETRIC_ENROLLED)
          }
        }
      }
@@ -105,3 +132,4 @@ class BiometricAuth: NSObject {
    }
 
 }
+
