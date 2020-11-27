@@ -42,7 +42,7 @@ public class SwiftSecurityStoragePlugin: NSObject, FlutterPlugin {
             break;
         case "canAuthenticate":
             if SecureStorage.canAuthenticate() == "Success" {
-                result(SecureStorage.canAuthenticate())
+                result("Success")
             }else{
                 let rootViewController = UIApplication.shared.keyWindow?.rootViewController
                 let alert = UIAlertController(title: "Mi Espacio Pacifico", message: "Cambiar la configuración de \nFace ID o Touch ID.", preferredStyle: .alert)
