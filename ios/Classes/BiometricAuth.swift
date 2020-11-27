@@ -49,26 +49,15 @@ class BiometricAuth: NSObject {
      
    }
    func canEvaluatePolicy() -> Bool {
-    let touchMe = BiometricAuth()
-    return touchMe.biometricType() != .none
-//      let context = LAContext()
-//    if(context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)){
-//        if (context.biometryType == LABiometryType.faceID) {
-//                    return .faceID
-//                } else if (context.biometryType == LABiometryType.touchID) {
-//                    return .touchID
-//                } else {
-//                    return .notExist
-//                }
-//    }
-//    return .none
+      let context = LAContext()
+      return context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
    }
 
 
    func authenticateUser(completion: @escaping (String?,BiometricPrompt?) -> Void) {
-    guard canEvaluatePolicy()  else {
+     guard canEvaluatePolicy() else {
 //        let error:BiometricPrompt = nil
-        completion("Touch ID or Face not available",.ERROR_NEGATIVE_BUTTON)
+        completion("Touch ID not available",.ERROR_NEGATIVE_BUTTON)
        return
      }
      let context = LAContext()

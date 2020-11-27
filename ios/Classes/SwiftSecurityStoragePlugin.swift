@@ -9,8 +9,7 @@ public class SwiftSecurityStoragePlugin: NSObject, FlutterPlugin {
     }
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-        //result("iOS " + UIDevice.current.systemVersion)
-        
+
         switch call.method {
         case "read":
             if let args = call.arguments as? Dictionary<String,Any> {
@@ -20,8 +19,7 @@ public class SwiftSecurityStoragePlugin: NSObject, FlutterPlugin {
             break;
         case "delete":
             if let args = call.arguments as? Dictionary<String,Any> {
-                SecureStorage.delete(args)
-                result("Success")
+                result(SecureStorage.delete(args))
             }
             break;
         case "write":
@@ -32,6 +30,7 @@ public class SwiftSecurityStoragePlugin: NSObject, FlutterPlugin {
                     result(FlutterError( code: biometricPrompt!,
                                          message: "",
                                          details: "" ))
+                    
                 })
             }
             break;
@@ -44,21 +43,9 @@ public class SwiftSecurityStoragePlugin: NSObject, FlutterPlugin {
             if SecureStorage.canAuthenticate() == "Success" {
                 result("Success")
             }else{
-                let rootViewController = UIApplication.shared.keyWindow?.rootViewController
-                let alert = UIAlertController(title: "Mi Espacio Pacifico", message: "Cambiar la configuración de \nFace ID o Touch ID.", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "ir a la configuración", style:  UIAlertAction.Style.default, handler: { action in
-                    if let url = URL(string: "App-Prefs:root=TOUCHID_PASSCODE") {
-                        result("ErrorUnsupported")
-                        UIApplication.shared.openURL(url)
-                        
-                    }
-                }))
-                alert.addAction(UIAlertAction(title: "Cerrar", style: UIAlertAction.Style.cancel, handler: { action in
-                    result("ErrorUnsupported")
-                    
-                }))
-
-                rootViewController?.present(alert, animated: true, completion: nil)
+                SecureStorage.createAlert({ value in
+                    result(value)
+                })
             }
             
             
@@ -67,5 +54,6 @@ public class SwiftSecurityStoragePlugin: NSObject, FlutterPlugin {
             result(FlutterMethodNotImplemented)
         }
     }
+    
 }
 

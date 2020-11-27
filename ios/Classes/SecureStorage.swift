@@ -39,9 +39,9 @@ public class SecureStorage: NSObject,Parceable {
     @objc public class func read(_ data:Dictionary<String, Any>) -> String {
         return Biometric.readPasswordForService(serviceName: data["name"]! as! String)
     }
-    @objc public class func delete(_ data:Dictionary<String, Any>) -> String {
-        Biometric.deletePassword(serviceName: data["name"]! as! String)
-        return ""
+    @objc public class func delete(_ data:Dictionary<String, Any>) -> Bool {
+        
+        return Biometric.deletePassword(serviceName: data["name"]! as! String)
     }
     @objc public class func write(_ data:Dictionary<String, Any>, _ success: @escaping () -> Void,_ errorMessagge: @escaping (String?) -> Void)  {
         Biometric.savePasswordForService(password: data["content"]! as! String, serviceName: data["name"]! as! String, success, errorMessagge)
@@ -66,7 +66,24 @@ public class SecureStorage: NSObject,Parceable {
         }
 
     }
+    @objc public class func createAlert(_ success: @escaping (String) -> Void){
+        let rootViewController = UIApplication.shared.keyWindow?.rootViewController
+        let alert = UIAlertController(title: "Mi Espacio Pacifico", message: "Cambiar la configuración de \nFace ID o Touch ID.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "ir a la configuración", style:  UIAlertAction.Style.default, handler: { action in
+            if let url = URL(string: "App-Prefs:root=TOUCHID_PASSCODE") {
+//                success("ErrorUnsupported")
+                success(BiometricPrompt.ERROR_NEGATIVE_BUTTON.rawValue)
+                UIApplication.shared.openURL(url)
+                
+            }
+        }))
+        alert.addAction(UIAlertAction(title: "Cerrar", style: UIAlertAction.Style.cancel, handler: { action in
+            success(BiometricPrompt.ERROR_NEGATIVE_BUTTON.rawValue)
+            
+        }))
 
+        rootViewController?.present(alert, animated: true, completion: nil)
+    }
 
  
 }
@@ -89,29 +106,8 @@ extension Parceable {
             let jsonData = try JSONEncoder().encode(obj)
             let jsonString = String(data: jsonData, encoding: .utf8)!
             return jsonString
-            // and decode it back
-//            let decodedSentences = try JSONDecoder().decode([ResultData].self, from: jsonData)
-//            print(decodedSentences)
         } catch { print(error) }
         return "asda"
     }
 }
 
-/* prompt
- 'title': title,
-       'subtitle': subtitle,
-       'description': description,
-       'negativeButton': negativeButton,
-       'confirmationRequired': confirmationRequired,
- */
-/*
- 'Success': CanAuthenticateResponse.success,
-   'ErrorHwUnavailable': CanAuthenticateResponse.errorHwUnavailable,
-   'ErrorNoBiometricEnrolled': CanAuthenticateResponse.errorNoBiometricEnrolled,
-   'ErrorNoHardware': CanAuthenticateResponse.errorNoHardware,
-   'ErrorUnknown': CanAuthenticateResponse.unknown,
-   'ErrorSecurityUpdateRequired':
-       CanAuthenticateResponse.errorSecurityUpdateRequired,
-   'ErrorUnsupported': CanAuthenticateResponse.unsupported
- 
- */
