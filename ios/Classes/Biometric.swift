@@ -14,8 +14,6 @@ import Foundation
     this class is a facade pattern to use a Biometric authentication
     and current use two object BiometricAuth and KeychainPasswordItem
  */
-
-
 @objc
 public class Biometric: NSObject {
     private var passwordItems: [KeychainPasswordItem] = []
