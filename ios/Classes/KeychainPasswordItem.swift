@@ -235,7 +235,7 @@ struct KeychainPasswordItem {
               kSecAttrLabel as String: service,
               kSecAttrAccessControl as String: accessControl,
               kSecAttrAccount as String: account!,
-              kSecUseOperationPrompt as String: "Grant access to YAPE",
+              kSecUseOperationPrompt as String: "Grant access to Pacifico",
               kSecReturnData as String: kCFBooleanTrue,
               kSecMatchLimit as String: kSecMatchLimitOne,
               kSecReturnAttributes as String: kCFBooleanTrue,

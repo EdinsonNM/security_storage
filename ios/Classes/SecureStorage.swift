@@ -22,6 +22,11 @@ public class SecureStorage: NSObject,Parceable {
     @objc public class func canAuthenticate() -> String {
         if Biometric.isBiometricAvailable() {
             return "Success"
+//            if Biometric.isAvailableInApp() {
+//                return "Success"
+//            }else{
+//                return "ErrorUnsupported"
+//            }
         }else{
             return "ErrorUnsupported"
         }

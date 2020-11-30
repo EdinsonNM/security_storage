@@ -12,36 +12,50 @@ public class SwiftSecurityStoragePlugin: NSObject, FlutterPlugin {
 
         switch call.method {
         case "read":
+            print("NNNNNNNNNNNNNNNNNNNNNNNNNNNNN READ")
             if let args = call.arguments as? Dictionary<String,Any> {
                 
                 result(SecureStorage.read(args))
             }
             break;
         case "delete":
+            print("NNNNNNNNNNNNNNNNNNNNNNNNNNNNN delete")
             if let args = call.arguments as? Dictionary<String,Any> {
                 result(SecureStorage.delete(args))
             }
             break;
         case "write":
+            print("NNNNNNNNNNNNNNNNNNNNNNNNNNNNN write")
             if let args = call.arguments as? Dictionary<String,Any> {
                 SecureStorage.write(args,{
-                    result("Success")
+                   
+                    DispatchQueue.main.async {
+                      // your code here
+                        result("Success")
+                    }
                 },{ biometricPrompt in
-                    result(FlutterError( code: biometricPrompt!,
-                                         message: "",
-                                         details: "" ))
+                    DispatchQueue.main.async {
+                      // your code here
+                        result(FlutterError( code: biometricPrompt!,
+                                             message: "",
+                                             details: "" ))
+                    }
+                    
                     
                 })
             }
             break;
         case "init":
+            print("NNNNNNNNNNNNNNNNNNNNNNNNNNNNN init")
             if let args = call.arguments as? Dictionary<String,Any> {
                 SecureStorage.initValues(args["name"]! as! String)
             }
             break;
         case "canAuthenticate":
-            result(SecureStorage.canAuthenticate())
-
+            let resultValue = SecureStorage.canAuthenticate()
+            result(resultValue)
+            print("NNNNNNNNNNNNNNNNNNNNNNNNNNNNN canAuthenticate")
+            result("Success")
             break;
         default:
             result(FlutterMethodNotImplemented)

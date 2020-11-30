@@ -111,7 +111,7 @@ public class Biometric: NSObject {
           let keychainPassword = try passwordItem.readPassword()
           return keychainPassword
         } catch {
-           return "-1"
+           return "null"
         }
     }
     /*
