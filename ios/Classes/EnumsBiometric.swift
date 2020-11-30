@@ -27,5 +27,6 @@ enum BiometricPrompt:String {
     case ERROR_NOT_INITIALIZED = "NotInitialized"
     case ERROR_KEY_PERMANENTLY_INVALIDATED = "KeyPermanentlyInvalidated"
     case ERROR_NOT_BIOMETRIC_ENROLLED = "NoBiometricEnrolled"
+    case ERROR_NONE = "NoError"
 }
 //ERROR_FINGERPRINT_NO_REGISTER

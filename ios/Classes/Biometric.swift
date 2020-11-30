@@ -78,8 +78,8 @@ public class Biometric: NSObject {
                                                    serviceName:String, _ success: @escaping () -> Void,_ errorMessagge: @escaping (String?) -> Void) {
         let touchMe = BiometricAuth()
              touchMe.authenticateUser() { message,biometricPrompt in
-            if biometricPrompt != nil {
-                errorMessagge(biometricPrompt.map { $0.rawValue })
+                if biometricPrompt != .ERROR_NONE {
+                    errorMessagge(biometricPrompt.rawValue)
              } else {
                  do {
                             let passwordItem = KeychainPasswordItem(service: serviceName,
@@ -88,7 +88,7 @@ public class Biometric: NSObject {
                             try passwordItem.savePassword(password)
                             success()
                         }catch{
-                            errorMessagge(biometricPrompt.map { $0.rawValue })
+                            errorMessagge(biometricPrompt.rawValue)
                             
                         }
              }

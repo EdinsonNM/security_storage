@@ -54,7 +54,7 @@ class BiometricAuth: NSObject {
    }
 
 
-   func authenticateUser(completion: @escaping (String?,BiometricPrompt?) -> Void) {
+   func authenticateUser(completion: @escaping (String?,BiometricPrompt) -> Void) {
      guard canEvaluatePolicy() else {
 //        let error:BiometricPrompt = nil
         completion("Touch ID not available",.ERROR_NEGATIVE_BUTTON)
@@ -69,12 +69,12 @@ class BiometricAuth: NSObject {
          DispatchQueue.main.async {
            // User authenticated successfully, take appropriate action
            BiometricAuth.saveAvailibilityApp(active: true);
-           completion(nil,nil)
+            completion(nil,.ERROR_NONE)
          }
        } else {
          BiometricAuth.saveAvailibilityApp(active: false);
          if #available(iOS 11.0, *) {
-            let biometricPrompt:BiometricPrompt
+            var biometricPrompt:BiometricPrompt = .ERROR_NONE
             switch evaluateError {
                    case LAError.authenticationFailed?:
                         message = "There was a problem verifying your identity."
@@ -108,7 +108,7 @@ class BiometricAuth: NSObject {
                   
                    completion(message,biometricPrompt)
          } else {
-             message = "Face ID/not available"
+            message = "Face ID/not available"
             completion(message,BiometricPrompt.ERROR_NOT_BIOMETRIC_ENROLLED)
          }
        }
