@@ -20,21 +20,11 @@ public class SecureStorage: NSObject,Parceable {
    
     
     @objc public class func canAuthenticate() -> String {
-        
-//        let result = ResultData(Success: "true",
-//                                ErrorHwUnavailable: "noerror",
-//                                ErrorNoBiometricEnrolled: "asd",
-//                                ErrorNoHardware: "asd",
-//                                ErrorUnknown: "asd")
         if Biometric.isBiometricAvailable() {
             return "Success"
         }else{
-           
-        //    self.present(alert, animated: true, completion: nil)
             return "ErrorUnsupported"
         }
-//        return self.toJson(result)
-        
     }
     @objc public class func read(_ data:Dictionary<String, Any>) -> String {
         return Biometric.readPasswordForService(serviceName: data["name"]! as! String)
