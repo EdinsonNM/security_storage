@@ -49,8 +49,13 @@ class BiometricAuth: NSObject {
      
    }
    func canEvaluatePolicy() -> Bool {
-      let context = LAContext()
-      return context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
+    if biometricType() == .none {
+        return false
+    }else{
+        return true
+    }
+//      let context = LAContext()
+//      return context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
    }
 
 

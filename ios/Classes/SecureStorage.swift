@@ -63,17 +63,17 @@ public class SecureStorage: NSObject,Parceable {
     }
     @objc public class func createAlert(_ success: @escaping (String) -> Void){
         let rootViewController = UIApplication.shared.keyWindow?.rootViewController
-        let alert = UIAlertController(title: "Mi Espacio Pacifico", message: "Cambiar la configuración de \nFace ID o Touch ID.", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "ir a la configuración", style:  UIAlertAction.Style.default, handler: { action in
+        let alert = UIAlertController(title: "Mi Espacio Pacifico", message: "Para usar Face ID o Touch ID\n debe autorizar su uso en configuraciones.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "ir a configuraciones", style:  UIAlertAction.Style.default, handler: { action in
             if let url = URL(string: "App-Prefs:root=TOUCHID_PASSCODE") {
 //                success("ErrorUnsupported")
-                success(BiometricPrompt.ERROR_NEGATIVE_BUTTON.rawValue)
+                success(BiometricPrompt.ERROR_NOT_BIOMETRIC_ENROLLED.rawValue)
                 UIApplication.shared.openURL(url)
                 
             }
         }))
         alert.addAction(UIAlertAction(title: "Cerrar", style: UIAlertAction.Style.cancel, handler: { action in
-            success(BiometricPrompt.ERROR_NEGATIVE_BUTTON.rawValue)
+            success(BiometricPrompt.ERROR_NOT_BIOMETRIC_ENROLLED.rawValue)
             
         }))
 
