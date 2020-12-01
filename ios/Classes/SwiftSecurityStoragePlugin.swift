@@ -53,9 +53,16 @@ public class SwiftSecurityStoragePlugin: NSObject, FlutterPlugin {
             break;
         case "canAuthenticate":
             let resultValue = SecureStorage.canAuthenticate()
-            result(resultValue)
+            
+            if resultValue == "Success" {
+                result(resultValue)
+            }else{
+                SecureStorage.createAlert({ value in
+                    result("ErrorUnsupported")
+                })
+            }
             print("NNNNNNNNNNNNNNNNNNNNNNNNNNNNN canAuthenticate")
-            result("Success")
+            
             break;
         default:
             result(FlutterMethodNotImplemented)
