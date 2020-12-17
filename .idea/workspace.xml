@@ -27,11 +27,13 @@
       <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/ios/Classes/EnumsBiometric.swift" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/ios/Classes/EnumsBiometric.swift" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/ios/Classes/SecureStorage.swift" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/ios/Classes/SecureStorage.swift" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/ios/Classes/SwiftSecurityStoragePlugin.swift" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/ios/Classes/SwiftSecurityStoragePlugin.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/lib/security_storage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/lib/security_storage.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ios/Classes/Biometric.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/Biometric.swift" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ios/Classes/BiometricAuth.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/BiometricAuth.swift" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ios/Classes/EnumsBiometric.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/EnumsBiometric.swift" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ios/Classes/SecureStorage.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/SecureStorage.swift" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ios/Classes/SwiftSecurityStoragePlugin.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/SwiftSecurityStoragePlugin.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/security_storage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/security_storage.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

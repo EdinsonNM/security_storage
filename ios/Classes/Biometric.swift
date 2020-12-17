@@ -18,6 +18,16 @@ import Foundation
 public class Biometric: NSObject {
     private var passwordItems: [KeychainPasswordItem] = []
     
+    @objc public class func getPermission( _ success: @escaping () -> Void,_ errorMessagge: @escaping (String?) -> Void) {
+        let touchMe = BiometricAuth()
+        touchMe.getPermission(completion: { message,biometricPrompt in
+            if biometricPrompt == .ERROR_NONE {
+                success()
+            }else{
+                errorMessagge(biometricPrompt.rawValue)
+            }
+        })
+    }
     // MARK: UI Interface
     /*
      This function return if Touch or Face ID is available Policy
@@ -74,20 +84,30 @@ public class Biometric: NSObject {
       */
     @objc public class func savePasswordForService(password:String,
                                                    serviceName:String, _ success: @escaping () -> Void,_ errorMessagge: @escaping (String?) -> Void) {
+        
+       
+       
         let touchMe = BiometricAuth()
              touchMe.authenticateUser() { message,biometricPrompt in
                 if biometricPrompt != .ERROR_NONE {
                     errorMessagge(biometricPrompt.rawValue)
-             } else {
+                } else {
+                    let isDeleted = deletePassword(serviceName: serviceName)
+                    print(isDeleted)
                  do {
                             let passwordItem = KeychainPasswordItem(service: serviceName,
                                                                     account: BiometricAuth.username,
                                                                     accessGroup: KeychainConfiguration.accessGroup)
                             try passwordItem.savePassword(password)
+                            touchMe.saveDomainPolicy()
+                            BiometricAuth.saveAvailibilityApp(active: true)
+                    
+                        
                             success()
+                            
                         }catch{
                             errorMessagge(biometricPrompt.rawValue)
-                            
+
                         }
              }
            }
@@ -102,15 +122,24 @@ public class Biometric: NSObject {
      /// - parameter serviceName: is a String Value
     */
     @objc public class func readPasswordForService(serviceName:String) -> String {
-        do {
-          let passwordItem = KeychainPasswordItem(service: serviceName,
-                                                  account: BiometricAuth.username,
-                                                  accessGroup: KeychainConfiguration.accessGroup)
-          let keychainPassword = try passwordItem.readPassword()
-          return keychainPassword
-        } catch {
-           return "null"
+        
+        let touchMe = BiometricAuth().isSameDomainPolicy()
+        if touchMe {
+            do {
+              let passwordItem = KeychainPasswordItem(service: serviceName,
+                                                      account: BiometricAuth.username,
+                                                      accessGroup: KeychainConfiguration.accessGroup)
+              let keychainPassword = try passwordItem.readPassword()
+              return keychainPassword
+            } catch {
+               return "null"
+            }
+        }else{
+            return "null"
         }
+             
+        
+      
     }
     /*
          * This function receive one param for read your password and interact with you biometric
@@ -120,12 +149,13 @@ public class Biometric: NSObject {
         /// - parameter serviceName: is a String Value
        */
     @objc public class func deletePassword(serviceName:String) -> Bool {
+        BiometricAuth.saveAvailibilityApp(active: false)
         do {
           let passwordItem = KeychainPasswordItem(service: serviceName,
                                                   account: BiometricAuth.username,
                                                   accessGroup: KeychainConfiguration.accessGroup)
           try passwordItem.deleteItem()
-          BiometricAuth.saveAvailibilityApp(active: false)
+          
           return true
         } catch {
            return false

@@ -17,8 +17,15 @@ import Foundation
 
 @objc
 public class SecureStorage: NSObject,Parceable {
-   
-    
+    @objc public class func getIconString()-> String {
+        return Biometric.getImageIconBiometric()
+    }
+    @objc public class func getPermission(_ success: @escaping () -> Void,_ errorMessagge: @escaping (String?) -> Void) {
+        Biometric.getPermission(success, errorMessagge)
+    }
+    @objc public class func isAvailableInApp()->Bool {
+        return Biometric.isAvailableInApp()
+    }
     @objc public class func canAuthenticate() -> String {
         if Biometric.isBiometricAvailable() {
             return "Success"

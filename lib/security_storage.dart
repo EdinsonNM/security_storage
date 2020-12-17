@@ -12,7 +12,8 @@ enum CanAuthenticateResponse {
   errorNoHardware,
   unsupported,
   unknown,
-  errorSecurityUpdateRequired
+  errorSecurityUpdateRequired,
+  deniedPermission,
 }
 
 const _canAuthenticateMapping = {
@@ -23,7 +24,8 @@ const _canAuthenticateMapping = {
   'ErrorUnknown': CanAuthenticateResponse.unknown,
   'ErrorSecurityUpdateRequired':
       CanAuthenticateResponse.errorSecurityUpdateRequired,
-  'ErrorUnsupported': CanAuthenticateResponse.unsupported
+  'ErrorUnsupported': CanAuthenticateResponse.unsupported,
+  'DeniedPermission': CanAuthenticateResponse.deniedPermission,
 };
 
 enum AuthExceptionCode {
@@ -154,6 +156,20 @@ class SecurityStorage {
           'Error while initializing security storage.', e, stackTrace);
     }
     return null;
+  }
+  // Future<String> getIconString() =>
+  //     _channel.invokeMethod<String>('getIconString');
+  static Future<String> getIconString() async {
+
+    var result = await _channel.invokeMethod<String>('getIconString');
+    print(result);
+    return result;
+
+  }
+  static Future<CanAuthenticateResponse> getPermission() async {
+
+      var result = await _channel.invokeMethod<String>('getPermission');
+      return _canAuthenticateMapping[result];
   }
 
   Future<String> read() =>
