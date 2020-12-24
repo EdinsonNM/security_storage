@@ -8,8 +8,8 @@ public class SwiftSecurityStoragePlugin: NSObject, FlutterPlugin {
         registrar.addMethodCallDelegate(instance, channel: channel)
     }
     
-    public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-
+    public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult)  {
+        let success = "Success"
         switch call.method {
         case "read":
             if Biometric.isAvailableInApp() {
@@ -41,20 +41,7 @@ public class SwiftSecurityStoragePlugin: NSObject, FlutterPlugin {
         case "write":
             if let args = call.arguments as? Dictionary<String,Any> {
                 SecureStorage.write(args,{
-                   
-                    DispatchQueue.main.async {
-                      // your code here
-                        result("Success")
-                    }
-                },{ biometricPrompt in
-                    DispatchQueue.main.async {
-                      // your code here
-                        result(FlutterError( code: biometricPrompt!,
-                                             message: "",
-                                             details: "" ))
-                    }
-                    
-                    
+                    result(success)
                 })
             }
             break;
@@ -65,22 +52,29 @@ public class SwiftSecurityStoragePlugin: NSObject, FlutterPlugin {
             break;
         case "canAuthenticate":
             //Alway succes because don't need validate ios 11 is alway available biometric hardaware
-            let context = LAContext()
-            var error: NSError?
-
-            if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
-                result("Success")
-            } else {
-                result("DeniedPermission")
-            }
-            result( SecureStorage.canAuthenticate())
-            
+            result(success)
             break;
         case "getPermission":
             SecureStorage.getPermission({
-                result("Success")
-            }, { errorMessage in
-                result(errorMessage)
+                result(success)
+            }, { error in
+                let biometricTypeError = SwiftSecurityStoragePlugin.convertErrorTo(error!)
+                DispatchQueue.main.sync {
+//                    result("Lockout")'Lockout'
+//                    result
+             
+                    
+                    if biometricTypeError == BiometricPrompt.ERROR_DENIED_PERMISSION.rawValue {
+                        result(biometricTypeError)
+                    }else{
+                        result(FlutterError( code: biometricTypeError,
+                                             message: "",
+                                             details: "" ))
+                    }
+                }
+              
+               
+               
             })
             break;
         case "isAvailableInApp":
@@ -96,5 +90,42 @@ public class SwiftSecurityStoragePlugin: NSObject, FlutterPlugin {
         }
     }
     
+    public static func convertErrorTo(_ evaluateError:NSError) -> String {
+        var biometricPrompt:BiometricPrompt = .ERROR_NONE
+        var message:String = ""
+        if #available(iOS 11.0, *) {
+            switch evaluateError {
+            case LAError.authenticationFailed:
+                message = "There was a problem verifying your identity."
+                biometricPrompt = .ERROR_FAILED
+                break
+            case LAError.userCancel:
+                message = "You pressed cancel."
+                biometricPrompt = .ERROR_CANCELED
+                break
+            case LAError.userFallback:
+                message = "You pressed password."
+                biometricPrompt = .ERROR_LOCKOUT
+                break
+            case LAError.biometryNotAvailable:
+                message = "Face ID/Touch ID is not available."
+                biometricPrompt = .ERROR_DENIED_PERMISSION
+                break
+            case LAError.biometryNotEnrolled:
+                message = "Face ID/Touch ID is not set up."
+                biometricPrompt = .ERROR_NOT_BIOMETRIC_ENROLLED
+                break
+            case LAError.biometryLockout:
+                message = "Face ID/Touch ID is locked."
+                biometricPrompt = .ERROR_LOCKOUT
+                break
+            default:
+                message = "Face ID/Touch ID may not be configured"
+                biometricPrompt = .ERROR_NOT_BIOMETRIC_ENROLLED
+            }
+        }
+        print(message)
+        return biometricPrompt.rawValue
+    }
 }
 

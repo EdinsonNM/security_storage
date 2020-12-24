@@ -169,6 +169,7 @@ class SecurityStorage {
   static Future<CanAuthenticateResponse> getPermission() async {
 
       var result = await _channel.invokeMethod<String>('getPermission');
+
       return _canAuthenticateMapping[result];
   }
 

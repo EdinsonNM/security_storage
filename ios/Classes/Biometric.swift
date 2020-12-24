@@ -14,18 +14,21 @@ import Foundation
     this class is a facade pattern to use a Biometric authentication
     and current use two object BiometricAuth and KeychainPasswordItem
  */
+public typealias Success = () -> Void
+public typealias ErrorType = (NSError?) -> Void
+
 @objc
 public class Biometric: NSObject {
     private var passwordItems: [KeychainPasswordItem] = []
     
-    @objc public class func getPermission( _ success: @escaping () -> Void,_ errorMessagge: @escaping (String?) -> Void) {
-        let touchMe = BiometricAuth()
-        touchMe.getPermission(completion: { message,biometricPrompt in
-            if biometricPrompt == .ERROR_NONE {
+    @objc public class func getPermission( _ success: @escaping Success,_ errorType: @escaping ErrorType) {
+        let localAuth = LocalAuth()
+        localAuth.getPermission(completion: { error in
+            guard let currentError = error else {
                 success()
-            }else{
-                errorMessagge(biometricPrompt.rawValue)
+                return
             }
+            errorType(currentError)
         })
     }
     // MARK: UI Interface
@@ -33,7 +36,7 @@ public class Biometric: NSObject {
      This function return if Touch or Face ID is available Policy
      */
     @objc public class func isBiometricAvailable() -> Bool {
-        let touchMe = BiometricAuth()
+        let touchMe = LocalAuth()
         return touchMe.canEvaluatePolicy()
     }
     /*
@@ -43,7 +46,7 @@ public class Biometric: NSObject {
      you need setUp this images in assets module
     */
     @objc public class func getImageIconBiometric() -> String {
-         let touchMe = BiometricAuth()
+         let touchMe = LocalAuth()
          return touchMe.getIcon()
     }
  
@@ -55,7 +58,10 @@ public class Biometric: NSObject {
           * @param success A Completion Handler
           * @param errorMessagge(String?) A Completion Handler
         */
-    @objc public class func checkLoginForService(_ password: String, serviceName: String,_ success: @escaping (Bool) -> Void,_ errorMessagge: @escaping (String?) -> Void) -> Bool {
+    @objc public class func checkLoginForService(_ password: String,
+                                                 serviceName: String,
+                                                 _ success: @escaping (Bool) -> Void,
+                                                 _ errorMessagge: @escaping (String?) -> Void) -> Bool {
        
        let username = "unique_id_user"
        guard username == UserDefaults.standard.value(forKey: "username") as? String else {
@@ -63,10 +69,10 @@ public class Biometric: NSObject {
         return false
        }
        
-       do {
+        do {
             let passwordItem = KeychainPasswordItem(service: serviceName,
-                                                 account: username,
-                                                 accessGroup: KeychainConfiguration.accessGroup)
+                                                    account: username,
+                                                    accessGroup: KeychainConfiguration.accessGroup)
             let keychainPassword = try passwordItem.readPassword()
             success(password == keychainPassword)
        } catch {
@@ -82,37 +88,13 @@ public class Biometric: NSObject {
         * @param success A Completion Handler
         * @param errorMessagge(String?) A Completion Handler
       */
-    @objc public class func savePasswordForService(password:String,
-                                                   serviceName:String, _ success: @escaping () -> Void,_ errorMessagge: @escaping (String?) -> Void) {
-        
-       
-       
-        let touchMe = BiometricAuth()
-             touchMe.authenticateUser() { message,biometricPrompt in
-                if biometricPrompt != .ERROR_NONE {
-                    errorMessagge(biometricPrompt.rawValue)
-                } else {
-                    let isDeleted = deletePassword(serviceName: serviceName)
-                    print(isDeleted)
-                 do {
-                            let passwordItem = KeychainPasswordItem(service: serviceName,
-                                                                    account: BiometricAuth.username,
-                                                                    accessGroup: KeychainConfiguration.accessGroup)
-                            try passwordItem.savePassword(password)
-                            touchMe.saveDomainPolicy()
-                            BiometricAuth.saveAvailibilityApp(active: true)
-                    
-                        
-                            success()
-                            
-                        }catch{
-                            errorMessagge(biometricPrompt.rawValue)
-
-                        }
-             }
-           }
-       
-       
+    @objc public class func saveData(value:String,
+                                     identifierKey:String,
+                                     _ success: @escaping Success) {
+        let localAuth = LocalAuth()
+        localAuth.deleteData(identifierKey: identifierKey)
+        localAuth.saveData(value: value, identifierKey: identifierKey)
+        success()
     }
     /*
       * This function receive one param for read your password and interact with you biometric
@@ -122,24 +104,15 @@ public class Biometric: NSObject {
      /// - parameter serviceName: is a String Value
     */
     @objc public class func readPasswordForService(serviceName:String) -> String {
-        
-        let touchMe = BiometricAuth().isSameDomainPolicy()
-        if touchMe {
-            do {
-              let passwordItem = KeychainPasswordItem(service: serviceName,
-                                                      account: BiometricAuth.username,
-                                                      accessGroup: KeychainConfiguration.accessGroup)
-              let keychainPassword = try passwordItem.readPassword()
-              return keychainPassword
-            } catch {
-               return "null"
+        let localAuth = LocalAuth()
+        if localAuth.isSameDomainPolicy() {
+            guard let value = localAuth.readData(identifierKey: serviceName) else {
+                return "null"
             }
+            return value
         }else{
             return "null"
         }
-             
-        
-      
     }
     /*
          * This function receive one param for read your password and interact with you biometric
@@ -149,24 +122,17 @@ public class Biometric: NSObject {
         /// - parameter serviceName: is a String Value
        */
     @objc public class func deletePassword(serviceName:String) -> Bool {
-        BiometricAuth.saveAvailibilityApp(active: false)
-        do {
-          let passwordItem = KeychainPasswordItem(service: serviceName,
-                                                  account: BiometricAuth.username,
-                                                  accessGroup: KeychainConfiguration.accessGroup)
-          try passwordItem.deleteItem()
-          
-          return true
-        } catch {
-           return false
-        }
+        let localAuth = LocalAuth()
+        localAuth.saveAvailibilityApp(active: false)
+        localAuth.deleteData(identifierKey: serviceName)
+        return true
     }
     /*
          * This function return true if the app is biometric auth completed and available
          *
        */
     @objc public class func isAvailableInApp() -> Bool {
-         let touchMe = BiometricAuth()
+         let touchMe = LocalAuth()
         return touchMe.isAvailableInThisApp();
     }
  

@@ -14,14 +14,13 @@ import Foundation
     and current use one object Biometric
  */
 
-
 @objc
 public class SecureStorage: NSObject,Parceable {
     @objc public class func getIconString()-> String {
         return Biometric.getImageIconBiometric()
     }
-    @objc public class func getPermission(_ success: @escaping () -> Void,_ errorMessagge: @escaping (String?) -> Void) {
-        Biometric.getPermission(success, errorMessagge)
+    @objc public class func getPermission( _ success: @escaping Success,_ errorType: @escaping ErrorType) {
+        Biometric.getPermission(success, errorType)
     }
     @objc public class func isAvailableInApp()->Bool {
         return Biometric.isAvailableInApp()
@@ -29,13 +28,8 @@ public class SecureStorage: NSObject,Parceable {
     @objc public class func canAuthenticate() -> String {
         if Biometric.isBiometricAvailable() {
             return "Success"
-//            if Biometric.isAvailableInApp() {
-//                return "Success"
-//            }else{
-//                return "ErrorUnsupported"
-//            }
         }else{
-            return "ErrorUnsupported"
+            return BiometricPrompt.ERROR_LOCKOUT.rawValue
         }
     }
     @objc public class func read(_ data:Dictionary<String, Any>) -> String {
@@ -45,14 +39,13 @@ public class SecureStorage: NSObject,Parceable {
         
         return Biometric.deletePassword(serviceName: data["name"]! as! String)
     }
-    @objc public class func write(_ data:Dictionary<String, Any>, _ success: @escaping () -> Void,_ errorMessagge: @escaping (String?) -> Void)  {
-        Biometric.savePasswordForService(password: data["content"]! as! String, serviceName: data["name"]! as! String, success, errorMessagge)
-        
+    @objc public class func write(_ data:Dictionary<String, Any>, _ success: @escaping Success)  {
+        Biometric.saveData(value: data["content"]! as! String,
+                           identifierKey: data["name"]! as! String,
+                           success)
     }
     @objc public class func initValues(_ data:String) {
-        print(data)
-        if Biometric.checkLoginForService("", serviceName: data,
-                                          { result in
+        if Biometric.checkLoginForService("", serviceName: data,{ result in
                                             if result {
                                                 print("No Init Storage")
                                             }else{
@@ -68,26 +61,6 @@ public class SecureStorage: NSObject,Parceable {
         }
 
     }
-    @objc public class func createAlert(_ success: @escaping (String) -> Void){
-        let rootViewController = UIApplication.shared.keyWindow?.rootViewController
-        let alert = UIAlertController(title: "Mi Espacio Pacifico", message: "Para usar Face ID o Touch ID\n debe autorizar su uso en configuraciones.", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "ir a configuraciones", style:  UIAlertAction.Style.default, handler: { action in
-            if let url = URL(string: "App-Prefs:root=TOUCHID_PASSCODE") {
-//                success("ErrorUnsupported")
-                success(BiometricPrompt.ERROR_NOT_BIOMETRIC_ENROLLED.rawValue)
-                UIApplication.shared.openURL(url)
-                
-            }
-        }))
-        alert.addAction(UIAlertAction(title: "Cerrar", style: UIAlertAction.Style.cancel, handler: { action in
-            success(BiometricPrompt.ERROR_NOT_BIOMETRIC_ENROLLED.rawValue)
-            
-        }))
-
-        rootViewController?.present(alert, animated: true, completion: nil)
-    }
-
- 
 }
 
 struct ResultData : Codable {
