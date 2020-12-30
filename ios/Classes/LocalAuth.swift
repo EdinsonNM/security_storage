@@ -123,17 +123,29 @@ class LocalAuth: NSObject {
         return isAvailable;
     }
     func getIcon() -> String {
-        if #available(iOS 11.3, *) {
-            let touchMe = LocalAuth()
-            switch touchMe.biometricType() {
-            case .faceID:
-                return "face_icon"
-            default:
-                return "touch_icon"
-            }
+        let defaults = UserDefaults.standard
+        let currentBiometricIcon = "Biometric"
+        if let iconString = defaults.object(forKey: currentBiometricIcon) as? String {
+            return iconString
         }else{
-            return "touch_icon"
-        }
+            var iconString:String
+            if #available(iOS 11.3, *) {
+               
+                let touchMe = LocalAuth()
+                switch touchMe.biometricType() {
+                case .faceID:
+                    iconString = "face_icon"
+                    
+                default:
+                    iconString = "touch_icon"
+                }
+            }else{
+                iconString = "touch_icon"
+            }
+            defaults.set(iconString,forKey: currentBiometricIcon)
+            defaults.synchronize()
+            return iconString
+        }   
     }
     func canEvaluatePolicy() -> Bool {
         if biometricType() == .none {
