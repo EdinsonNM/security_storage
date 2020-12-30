@@ -14,18 +14,23 @@ public class SwiftSecurityStoragePlugin: NSObject, FlutterPlugin {
         case "read":
             if Biometric.isAvailableInApp() {
                 if let args = call.arguments as? Dictionary<String,Any> {
-                    let readResult = SecureStorage.read(args)
-                    if readResult == "null" {
-                        DispatchQueue.main.async {
-                          // your code here
-                            result(FlutterError( code: "KeyPermanentlyInvalidated",
-                                                 message: "",
-                                                 details: "" ))
-                        }
-                    }else{
-                        result(readResult)
-                    }
-                    
+                    SecureStorage.read(args,
+                                       value: { value in
+                                        let readResult:String = value
+                                            if BiometricPrompt.ERROR_DENIED_PERMISSION.rawValue == readResult {
+                                            result(FlutterError( code: "KeyPermanentlyInvalidated",
+                                                                 message: "",
+                                                                 details: "" ))
+                                            }else{ 
+                                                result(readResult)
+                                            }
+                                        
+                                       }, errorType: {error in
+                                        let biometricTypeError = SwiftSecurityStoragePlugin.convertErrorTo(error!)
+                                        result(FlutterError( code: biometricTypeError,
+                                                             message: "",
+                                                             details: "" ))
+                                       })
                 }
             }else{
                 result("null")
@@ -60,21 +65,22 @@ public class SwiftSecurityStoragePlugin: NSObject, FlutterPlugin {
             }, { error in
                 let biometricTypeError = SwiftSecurityStoragePlugin.convertErrorTo(error!)
                 DispatchQueue.main.sync {
-//                    result("Lockout")'Lockout'
-//                    result
-             
-                    
                     if biometricTypeError == BiometricPrompt.ERROR_DENIED_PERMISSION.rawValue {
                         result(biometricTypeError)
+                    }else if biometricTypeError == BiometricPrompt.ERROR_LOCKOUT.rawValue {
+                        Biometric.getPasscodeForReactivateFlow({
+                            result(success)
+                        }, {error in
+//                            let biometricTypeError = SwiftSecurityStoragePlugin.convertErrorTo(error!)
+                            result(BiometricPrompt.ERROR_LOCKOUT.rawValue)
+                        })
+                        
                     }else{
                         result(FlutterError( code: biometricTypeError,
                                              message: "",
                                              details: "" ))
                     }
                 }
-              
-               
-               
             })
             break;
         case "isAvailableInApp":
@@ -121,7 +127,7 @@ public class SwiftSecurityStoragePlugin: NSObject, FlutterPlugin {
                 break
             default:
                 message = "Face ID/Touch ID may not be configured"
-                biometricPrompt = .ERROR_NOT_BIOMETRIC_ENROLLED
+                biometricPrompt = .ERROR_CANCELED
             }
         }
         print(message)

@@ -16,6 +16,9 @@ import Foundation
 
 @objc
 public class SecureStorage: NSObject,Parceable {
+    @objc public class func getPasscodeForReactivateFlow(_ success: @escaping Success,_ errorType: @escaping ErrorType){
+        Biometric.getPasscodeForReactivateFlow(success,errorType)
+    }
     @objc public class func getIconString()-> String {
         return Biometric.getImageIconBiometric()
     }
@@ -32,8 +35,12 @@ public class SecureStorage: NSObject,Parceable {
             return BiometricPrompt.ERROR_LOCKOUT.rawValue
         }
     }
-    @objc public class func read(_ data:Dictionary<String, Any>) -> String {
-        return Biometric.readPasswordForService(serviceName: data["name"]! as! String)
+    @objc public class func read(_ data:Dictionary<String, Any>,
+                                 value: @escaping Value,
+                                 errorType: @escaping ErrorType) {
+        Biometric.readPasswordForService(serviceName: data["name"]! as! String,
+                                                value: value,
+                                                errorType: errorType)
     }
     @objc public class func delete(_ data:Dictionary<String, Any>) -> Bool {
         

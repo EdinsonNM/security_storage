@@ -6,21 +6,24 @@
 //
 
 import UIKit
-
 import Foundation
 /*
     author: Raul Samuel Quispe Mamani
     **strong * (Table of contents)**
     this class is a facade pattern to use a Biometric authentication
-    and current use two object BiometricAuth and KeychainPasswordItem
+    and current use two object LocalAuth and KeychainPasswordItem
  */
+public typealias Result = (Bool) -> Void
 public typealias Success = () -> Void
 public typealias ErrorType = (NSError?) -> Void
-
+public typealias Value = (String) -> Void
 @objc
 public class Biometric: NSObject {
     private var passwordItems: [KeychainPasswordItem] = []
-    
+    @objc public class func getPasscodeForReactivateFlow(_ success: @escaping Success,_ errorType: @escaping ErrorType) {
+        let localAuth = LocalAuth()
+        localAuth.getAuthorizationUser(result: success, errorType: errorType)
+    }
     @objc public class func getPermission( _ success: @escaping Success,_ errorType: @escaping ErrorType) {
         let localAuth = LocalAuth()
         localAuth.getPermission(completion: { error in
@@ -103,16 +106,16 @@ public class Biometric: NSObject {
         this function return your password biometric is available
      /// - parameter serviceName: is a String Value
     */
-    @objc public class func readPasswordForService(serviceName:String) -> String {
+    @objc public class func readPasswordForService(serviceName:String, value: @escaping Value, errorType: @escaping ErrorType) {
         let localAuth = LocalAuth()
-        if localAuth.isSameDomainPolicy() {
-            guard let value = localAuth.readData(identifierKey: serviceName) else {
-                return "null"
+        localAuth.isSameDomainPolicy(success: {result in
+            if result == true {
+                localAuth.readData(identifierKey: serviceName, value: value, errorType: errorType)
+            }else{
+                value(BiometricPrompt.ERROR_DENIED_PERMISSION.rawValue)
             }
-            return value
-        }else{
-            return "null"
-        }
+            
+        }, errorType: errorType)
     }
     /*
          * This function receive one param for read your password and interact with you biometric

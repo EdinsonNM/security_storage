@@ -22,18 +22,6 @@
     <list default="true" id="2600a4d6-f608-408c-8001-622e5b12bcbf" name="Default Changelist" comment="stable">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/ios/Classes/Biometric.swift" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/ios/Classes/Biometric.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/ios/Classes/BiometricAuth.swift" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/ios/Classes/BiometricAuth.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/ios/Classes/EnumsBiometric.swift" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/ios/Classes/EnumsBiometric.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/ios/Classes/SecureStorage.swift" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/ios/Classes/SecureStorage.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/ios/Classes/SwiftSecurityStoragePlugin.swift" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/ios/Classes/SwiftSecurityStoragePlugin.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/lib/security_storage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/lib/security_storage.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Classes/Biometric.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/Biometric.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Classes/BiometricAuth.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/BiometricAuth.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Classes/EnumsBiometric.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/EnumsBiometric.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Classes/SecureStorage.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/SecureStorage.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Classes/SwiftSecurityStoragePlugin.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/SwiftSecurityStoragePlugin.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/security_storage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/security_storage.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -181,15 +169,19 @@
     </state>
     <state x="448" y="121" key="SettingsEditor/0.0.1920.1080@0.0.1920.1080" timestamp="1605217750907" />
     <state x="448" y="133" key="SettingsEditor/0.23.1920.978@0.23.1920.978" timestamp="1606158865625" />
+    <state x="0" y="28" width="1395" height="872" key="Vcs.Push.Dialog.v2" timestamp="1608824691895">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="0" y="28" width="1395" height="872" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1608824691895" />
     <state x="1075" y="491" key="com.intellij.ide.util.TipDialog" timestamp="1602956597989">
       <screen x="0" y="23" width="3440" height="1337" />
     </state>
     <state x="560" y="392" key="com.intellij.ide.util.TipDialog/0.0.1792.1120@0.0.1792.1120" timestamp="1602392782336" />
     <state x="1075" y="491" key="com.intellij.ide.util.TipDialog/0.23.3440.1337/-1792.23.1792.1097@0.23.3440.1337" timestamp="1602956597989" />
-    <state x="412" y="205" width="720" height="490" key="find.popup" timestamp="1606390981031">
+    <state x="412" y="205" width="885" height="490" key="find.popup" timestamp="1608732763322">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="412" y="205" width="720" height="490" key="find.popup/0.0.1440.900@0.0.1440.900" timestamp="1606390981031" />
+    <state x="412" y="205" width="885" height="490" key="find.popup/0.0.1440.900@0.0.1440.900" timestamp="1608732763322" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

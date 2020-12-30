@@ -30,32 +30,43 @@ class LocalAuth: NSObject {
             // Fallback on earlier versions
         }
     }
-    func isSameDomainPolicy()->Bool{
+    func isSameDomainPolicy(success: Result,errorType: ErrorType){
        
-        laContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
+//        laContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
         
         let defaults = UserDefaults.standard
         let oldDomainState = defaults.object(forKey: LocalAuth.domainPolicyID) as? Data
 
         if #available(iOS 9.0, *) {
-            if let domainState = laContext.evaluatedPolicyDomainState, domainState == oldDomainState  {
-                // Enrollment state the same
-                print("nothing change")
-                return true
-            } else if(oldDomainState != nil){
-                // Enrollment state changed
-                
-                return false
+            var error: NSError?
+            if laContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+                if let domainState = laContext.evaluatedPolicyDomainState {
+                    let bData = domainState.base64EncodedData()
+                    if let decodedString = String(data: bData, encoding: .utf8) {
+                        print("Decoded Value: \(decodedString)")
+                    }
+                    if let domainState = laContext.evaluatedPolicyDomainState, domainState == oldDomainState  {
+                        // Enrollment state the same
+                        success(true)
+                    } else if(oldDomainState != nil){
+                        // Enrollment state changed
+                        success(false)
+                        
+                    }
+                }else if error != nil {
+                    errorType(error)
+                }
+            }else{
+                errorType(error)
             }
-        } else {
-            // Fallback on earlier versions
+          
         }
         
         // save the domain state for the next time
-        if #available(iOS 9.0, *) {
-            defaults.set(laContext.evaluatedPolicyDomainState, forKey: LocalAuth.domainPolicyID)
-        }
-        return true
+//        if #available(iOS 9.0, *) {
+//            defaults.set(laContext.evaluatedPolicyDomainState, forKey: LocalAuth.domainPolicyID)
+//        }
+        
     }
     // MARK:- CRUD Functions
     func saveData(value:String, identifierKey:String){
@@ -80,15 +91,15 @@ class LocalAuth: NSObject {
                 print("error")
         }
     }
-    func readData(identifierKey:String) -> String? {
+    func readData(identifierKey:String, value: Value, errorType: ErrorType) {
         do {
             let passwordItem = KeychainPasswordItem(service: identifierKey,
                                                     account: LocalAuth.account,
                                                     accessGroup: KeychainConfiguration.accessGroup)
             let keychainValue = try passwordItem.readPassword()
-            return keychainValue
-        }catch{
-            return nil
+            value(keychainValue)
+        }catch {
+            errorType(error as NSError)
         }
     }
     // MARK:- Biometric Functions
@@ -133,65 +144,7 @@ class LocalAuth: NSObject {
         //      let context = LAContext()
         //      return context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
     }
-    
-    func authenticateUser(completion: @escaping (String?,BiometricPrompt) -> Void) {
-        var biometricPrompt:BiometricPrompt = .ERROR_NONE
-    
-        laContext.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics,
-                                 localizedReason: LocalAuth.loginReason) { (success,
-                                                                evaluateError) in
-            
-            let message: String
-            if success {
-                DispatchQueue.main.async {
-                    // User authenticated successfully, take appropriate action
-                    self.saveAvailibilityApp(active: true);
-                    completion(nil,.ERROR_NONE)
-                }
-            } else {
-                self.saveAvailibilityApp(active: false);
-                if #available(iOS 11.0, *) {
-                    
-                    switch evaluateError {
-                    case LAError.authenticationFailed?:
-                        message = "There was a problem verifying your identity."
-                        biometricPrompt = .ERROR_FAILED
-                        break
-                    case LAError.userCancel?:
-                        message = "You pressed cancel."
-                        biometricPrompt = .ERROR_CANCELED
-                        break
-                    case LAError.userFallback?:
-                        message = "You pressed password."
-                        biometricPrompt = .ERROR_CANCELED
-                        break
-                    case LAError.biometryNotAvailable?:
-                        message = "Face ID/Touch ID is not available."
-                        biometricPrompt = .ERROR_DENIED_PERMISSION
-                        break
-                    case LAError.biometryNotEnrolled?:
-                        message = "Face ID/Touch ID is not set up."
-                        biometricPrompt = .ERROR_NOT_BIOMETRIC_ENROLLED
-                        break
-                    case LAError.biometryLockout?:
-                        message = "Face ID/Touch ID is locked."
-                        biometricPrompt = .ERROR_LOCKOUT
-                        break
-                    default:
-                        message = "Face ID/Touch ID may not be configured"
-                        biometricPrompt = .ERROR_NOT_BIOMETRIC_ENROLLED
-                        
-                    }
-                    
-                    completion(message,biometricPrompt)
-                } else {
-                    message = "Face ID/not available"
-                    completion(message,BiometricPrompt.ERROR_NOT_BIOMETRIC_ENROLLED)
-                }
-            }
-        }
-    }
-    
+
     func saveAvailibilityApp(active:Bool) {
         //  UserDefaults.standard.set(active, forKey: BiometricAuth.unique_app)
         UserDefaults.standard.set(active, forKey: LocalAuth.identifierApp)
@@ -214,6 +167,21 @@ class LocalAuth: NSObject {
                 self.saveAvailibilityApp(active: false);
                 completion(evaluateError! as NSError)
             }
+        }
+    }
+    func getAuthorizationUser(result: @escaping Success, errorType: @escaping ErrorType){
+        let context = LAContext()
+
+        if #available(iOS 9.0, *) {
+            context.evaluatePolicy(LAPolicy.deviceOwnerAuthentication, localizedReason: "Please authenticate to proceed.") {(success, error) in
+                if success {
+                    result()
+                }else{
+                    errorType(error as NSError?)
+                }
+            }
+        } else {
+            // Fallback on earlier versions
         }
     }
 }
