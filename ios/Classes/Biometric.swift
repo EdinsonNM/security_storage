@@ -97,6 +97,7 @@ public class Biometric: NSObject {
         let localAuth = LocalAuth()
         localAuth.deleteData(identifierKey: identifierKey)
         localAuth.saveData(value: value, identifierKey: identifierKey)
+        localAuth.saveDomainPolicy()
         success()
     }
     /*
