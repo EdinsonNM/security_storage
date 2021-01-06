@@ -38,7 +38,8 @@ enum AuthExceptionCode {
   failed,
   notInitialized,
   keyPermanentlyInvalidated,
-  noBiometricEnrolled
+  noBiometricEnrolled,
+  deniedPermission,
 }
 
 class AuthException implements Exception {
@@ -62,7 +63,8 @@ const _authErrorCodeMapping = {
   'Failed': AuthExceptionCode.failed,
   'NotInitialized': AuthExceptionCode.notInitialized,
   'KeyPermanentlyInvalidated': AuthExceptionCode.keyPermanentlyInvalidated,
-  'NoBiometricEnrolled': AuthExceptionCode.noBiometricEnrolled
+  'NoBiometricEnrolled': AuthExceptionCode.noBiometricEnrolled,
+  'DeniedPermission': AuthExceptionCode.deniedPermission,
 };
 
 class AndroidPromptInfo {
