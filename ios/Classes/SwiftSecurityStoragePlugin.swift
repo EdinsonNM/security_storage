@@ -80,7 +80,10 @@ public class SwiftSecurityStoragePlugin: NSObject, FlutterPlugin {
                             result(success)
                         }, {error in
 //                            let biometricTypeError = SwiftSecurityStoragePlugin.convertErrorTo(error!)
-                            result(BiometricPrompt.ERROR_LOCKOUT.rawValue)
+//                            result(BiometricPrompt.ERROR_LOCKOUT.rawValue)
+                            result(FlutterError( code: BiometricPrompt.ERROR_LOCKOUT.rawValue,
+                                                 message: "",
+                                                 details: "" ))
                         })
                         
                     }else{
