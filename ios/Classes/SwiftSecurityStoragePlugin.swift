@@ -72,7 +72,7 @@ public class SwiftSecurityStoragePlugin: NSObject, FlutterPlugin {
                 result(success)
             }, { error in
                 let biometricTypeError = SwiftSecurityStoragePlugin.convertErrorTo(error!)
-                DispatchQueue.main.sync {
+                DispatchQueue.main.async{
                     if biometricTypeError == BiometricPrompt.ERROR_DENIED_PERMISSION.rawValue {
                         result(biometricTypeError)
                     }else if biometricTypeError == BiometricPrompt.ERROR_LOCKOUT.rawValue {
