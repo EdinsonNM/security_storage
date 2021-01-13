@@ -187,7 +187,8 @@ class LocalAuth: NSObject {
         let context = LAContext()
 
         if #available(iOS 9.0, *) {
-            context.evaluatePolicy(LAPolicy.deviceOwnerAuthentication, localizedReason: "Please authenticate to proceed.") {(success, error) in
+            context.evaluatePolicy(LAPolicy.deviceOwnerAuthentication,
+                                   localizedReason: LocalAuth.loginReason) {(success, error) in
                 if success {
                     result()
                 }else{
