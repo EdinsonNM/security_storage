@@ -75,9 +75,11 @@ class LocalAuth: NSObject {
                                                     account: LocalAuth.account,
                                                     accessGroup: KeychainConfiguration.accessGroup)
             try passwordItem.savePassword(value)
+            self.saveAvailibilityApp(active: true);
             print("Success")
         }catch{
             print("error")
+            self.saveAvailibilityApp(active: false);
         }
     }
     func deleteData(identifierKey:String){
