@@ -65,7 +65,21 @@ public class SwiftSecurityStoragePlugin: NSObject, FlutterPlugin {
             break;
         case "canAuthenticate":
             //Alway succes because don't need validate ios 11 is alway available biometric hardaware
-            result(success)
+            var available:Bool!
+            var error:NSError?
+            if #available(iOS 11.0, *) {
+                    let context = LAContext()
+                available = (context.canEvaluatePolicy(LAPolicy.deviceOwnerAuthentication, error: &error) && context.biometryType == .faceID)
+                }
+            if(available){
+                result(success)
+            }else{
+                let biometricTypeError = SwiftSecurityStoragePlugin.convertErrorTo(error!)
+                result(FlutterError( code: biometricTypeError,
+                                     message: "",
+                                     details: "" ))
+            }
+            
             break;
         case "getPermission":
             SecureStorage.getPermission({
