@@ -65,19 +65,19 @@ public class SwiftSecurityStoragePlugin: NSObject, FlutterPlugin {
             break;
         case "canAuthenticate":
             //Alway succes because don't need validate ios 11 is alway available biometric hardaware
-            var available:Bool!
+         
             var error:NSError?
             if #available(iOS 11.0, *) {
                     let context = LAContext()
-                available = (context.canEvaluatePolicy(LAPolicy.deviceOwnerAuthentication, error: &error) && context.biometryType == .faceID)
+//                available = var error: NSError?
+                if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+                    result(success)
+                }else{
+                    let biometricTypeError = SwiftSecurityStoragePlugin.convertErrorTo(error!)
+                    result(FlutterError( code: biometricTypeError,
+                                         message: "",
+                                         details: "" ))
                 }
-            if(available){
-                result(success)
-            }else{
-                let biometricTypeError = SwiftSecurityStoragePlugin.convertErrorTo(error!)
-                result(FlutterError( code: biometricTypeError,
-                                     message: "",
-                                     details: "" ))
             }
             
             break;
@@ -85,8 +85,9 @@ public class SwiftSecurityStoragePlugin: NSObject, FlutterPlugin {
             SecureStorage.getPermission({
                 result(success)
             }, { error in
-                let biometricTypeError = SwiftSecurityStoragePlugin.convertErrorTo(error!)
+                
                 DispatchQueue.main.async{
+                    let biometricTypeError = SwiftSecurityStoragePlugin.convertErrorTo(error!)
                     if biometricTypeError == BiometricPrompt.ERROR_DENIED_PERMISSION.rawValue {
                         result(biometricTypeError)
                     }else if biometricTypeError == BiometricPrompt.ERROR_LOCKOUT.rawValue {
@@ -106,6 +107,9 @@ public class SwiftSecurityStoragePlugin: NSObject, FlutterPlugin {
                                              details: "" ))
                     }
                 }
+//                if biometricTypeError == BiometricPrompt.ERROR_LOCKOUT.rawValue {
+//                    print("Password Lockout")
+//                }
             })
             break;
         case "isAvailableInApp":

@@ -184,16 +184,21 @@ class LocalAuth: NSObject {
         }
     }
     func getAuthorizationUser(result: @escaping Success, errorType: @escaping ErrorType){
-        let context = LAContext()
-
+        
+        
         if #available(iOS 9.0, *) {
+            let context = LAContext()
             context.evaluatePolicy(LAPolicy.deviceOwnerAuthentication,
                                    localizedReason: LocalAuth.loginReason) {(success, error) in
-                if success {
-                    result()
-                }else{
-                    errorType(error as NSError?)
-                }
+                context.evaluatePolicy( .deviceOwnerAuthentication, localizedReason: LocalAuth.loginReason, reply: { (success, evalPolicyError) in
+                    
+                    if success {
+                        result()
+                    }else{
+                        errorType(error as NSError?)
+                    }
+                })
+                
             }
         } else {
             // Fallback on earlier versions
