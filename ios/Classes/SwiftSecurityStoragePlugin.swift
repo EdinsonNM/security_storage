@@ -107,9 +107,6 @@ public class SwiftSecurityStoragePlugin: NSObject, FlutterPlugin {
                                              details: "" ))
                     }
                 }
-//                if biometricTypeError == BiometricPrompt.ERROR_LOCKOUT.rawValue {
-//                    print("Password Lockout")
-//                }
             })
             break;
         case "isAvailableInApp":
