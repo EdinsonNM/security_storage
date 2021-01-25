@@ -175,10 +175,10 @@ class LocalAuth: NSObject {
         laContext.evaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics,
                                  localizedReason: LocalAuth.loginReason) { (success,evaluateError) in
             if evaluateError == nil {
-                self.saveAvailibilityApp(active: true);
+//                self.saveAvailibilityApp(active: true);
                 completion(nil)
             } else {
-                self.saveAvailibilityApp(active: false);
+//                self.saveAvailibilityApp(active: false);
                 completion(evaluateError! as NSError)
             }
         }
