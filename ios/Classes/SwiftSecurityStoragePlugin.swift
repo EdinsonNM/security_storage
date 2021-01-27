@@ -129,7 +129,7 @@ public class SwiftSecurityStoragePlugin: NSObject, FlutterPlugin {
             switch evaluateError {
             case LAError.authenticationFailed:
                 message = "There was a problem verifying your identity."
-                biometricPrompt = .ERROR_FAILED
+                biometricPrompt = .ERROR_LOCKOUT
                 break
             case LAError.userCancel:
                 message = "You pressed cancel."
