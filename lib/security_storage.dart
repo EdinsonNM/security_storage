@@ -168,6 +168,10 @@ class SecurityStorage {
     return result;
 
   }
+  static Future<bool> isAvailableInApp()async{
+    var result = await _channel.invokeMethod<bool>('isAvailableInApp');
+    return result;
+  }
   static Future<CanAuthenticateResponse> getPermission() async {
 
       var result = await _channel.invokeMethod<String>('getPermission');
