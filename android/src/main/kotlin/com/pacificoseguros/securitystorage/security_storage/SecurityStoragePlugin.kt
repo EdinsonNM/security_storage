@@ -131,6 +131,7 @@ public class SecurityStoragePlugin: FlutterPlugin, MethodCallHandler, ActivityAw
           promptInfo = createPromptInfo(getAndroidPromptInfo())
           biometricPrompt = createBiometricPrompt({
             processDataEncrypt(name,it.cryptoObject, content) { data ->
+              saveAvailableState(true)
               result.success(data)
             }
           }, {
@@ -146,7 +147,7 @@ public class SecurityStoragePlugin: FlutterPlugin, MethodCallHandler, ActivityAw
         val name = getName()
 
           var prefs = PreferenceHelper.customPrefs(this.context, "security-storage")
-          
+
           if(prefs.contains(name)){
             withStorage {
               if(exists()){
@@ -180,6 +181,7 @@ public class SecurityStoragePlugin: FlutterPlugin, MethodCallHandler, ActivityAw
             prefs.edit().remove(name).commit();
             storageItems.remove(name)
             cryptographyManager.removeStore(name)
+            saveAvailableState(false)
             result.success(true);
 
           }else{
@@ -188,7 +190,29 @@ public class SecurityStoragePlugin: FlutterPlugin, MethodCallHandler, ActivityAw
 
         }
       }
+      "isAvailableInApp" -> {
+        if (isAvailableInApp()){
+          result.success(true);
+        }else{
+          result.success(false);
+        }
+
+      }
       else -> result.notImplemented()
+    }
+
+  }
+  private fun isAvailableInApp(): Boolean {
+    var prefs = PreferenceHelper.customPrefs(this.context, "security-storage")
+    val isAvailableInApp = prefs.getBoolean("isAvailableInApp", false)
+    return isAvailableInApp
+  }
+  private fun saveAvailableState(value:Boolean){
+    var prefs = PreferenceHelper.customPrefs(this.context, "security-storage")
+    val sharedPref = prefs ?: return
+    with (sharedPref.edit()) {
+      putBoolean("isAvailableInApp", value)
+      apply()
     }
   }
   private fun canAuthenticate(): CanAuthenticateResponse {

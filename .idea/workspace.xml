@@ -21,25 +21,22 @@
   <component name="ChangeListManager">
     <list default="true" id="2600a4d6-f608-408c-8001-622e5b12bcbf" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/example/ios/Podfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/example/ios/Podfile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/lib/security_storage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/lib/security_storage.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/ios/Podfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Podfile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/security_storage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/security_storage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/src/main/kotlin/com/pacificoseguros/securitystorage/security_storage/SecurityStoragePlugin.kt" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/kotlin/com/pacificoseguros/securitystorage/security_storage/SecurityStoragePlugin.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[196e6b2b]" />
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="alpha" />
+        <entry key="$PROJECT_DIR$" value="alpha_ios" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="SYNC" />
   </component>
   <component name="ProjectId" id="1hzLp3LvPZpjOLSoqpFiJCnmQUx" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -128,30 +125,34 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state width="644" height="466" key="DebuggerActiveHint/0.0.1920.1080@0.0.1920.1080" timestamp="1606110063095" />
-    <state width="1398" height="210" key="GridCell.Tab.0.bottom" timestamp="1606419855275">
-      <screen x="0" y="0" width="1440" height="900" />
+    <state width="1398" height="173" key="GridCell.Tab.0.bottom" timestamp="1612883512376">
+      <screen x="0" y="25" width="1440" height="875" />
     </state>
     <state width="1398" height="210" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1606419855275" />
     <state width="1878" height="484" key="GridCell.Tab.0.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1606168232979" />
     <state width="1878" height="484" key="GridCell.Tab.0.bottom/0.23.1920.978@0.23.1920.978" timestamp="1606163761610" />
-    <state width="1398" height="210" key="GridCell.Tab.0.center" timestamp="1606419855274">
-      <screen x="0" y="0" width="1440" height="900" />
+    <state width="1398" height="173" key="GridCell.Tab.0.bottom/0.25.1440.875@0.25.1440.875" timestamp="1612883512376" />
+    <state width="1398" height="173" key="GridCell.Tab.0.center" timestamp="1612883512376">
+      <screen x="0" y="25" width="1440" height="875" />
     </state>
     <state width="1398" height="210" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1606419855274" />
     <state width="1878" height="484" key="GridCell.Tab.0.center/0.0.1920.1080@0.0.1920.1080" timestamp="1606168232977" />
     <state width="1878" height="484" key="GridCell.Tab.0.center/0.23.1920.978@0.23.1920.978" timestamp="1606163761607" />
-    <state width="1398" height="210" key="GridCell.Tab.0.left" timestamp="1606419855274">
-      <screen x="0" y="0" width="1440" height="900" />
+    <state width="1398" height="173" key="GridCell.Tab.0.center/0.25.1440.875@0.25.1440.875" timestamp="1612883512376" />
+    <state width="1398" height="173" key="GridCell.Tab.0.left" timestamp="1612883512375">
+      <screen x="0" y="25" width="1440" height="875" />
     </state>
     <state width="1398" height="210" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1606419855274" />
     <state width="1878" height="484" key="GridCell.Tab.0.left/0.0.1920.1080@0.0.1920.1080" timestamp="1606168232975" />
     <state width="1878" height="484" key="GridCell.Tab.0.left/0.23.1920.978@0.23.1920.978" timestamp="1606163761606" />
-    <state width="1398" height="210" key="GridCell.Tab.0.right" timestamp="1606419855274">
-      <screen x="0" y="0" width="1440" height="900" />
+    <state width="1398" height="173" key="GridCell.Tab.0.left/0.25.1440.875@0.25.1440.875" timestamp="1612883512375" />
+    <state width="1398" height="173" key="GridCell.Tab.0.right" timestamp="1612883512376">
+      <screen x="0" y="25" width="1440" height="875" />
     </state>
     <state width="1398" height="210" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1606419855274" />
     <state width="1878" height="484" key="GridCell.Tab.0.right/0.0.1920.1080@0.0.1920.1080" timestamp="1606168232978" />
     <state width="1878" height="484" key="GridCell.Tab.0.right/0.23.1920.978@0.23.1920.978" timestamp="1606163761608" />
+    <state width="1398" height="173" key="GridCell.Tab.0.right/0.25.1440.875@0.25.1440.875" timestamp="1612883512376" />
     <state width="1878" height="268" key="GridCell.Tab.1.bottom" timestamp="1605220649667">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
@@ -177,11 +178,6 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="0" y="28" width="1395" height="872" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1608824691895" />
-    <state x="1075" y="491" key="com.intellij.ide.util.TipDialog" timestamp="1602956597989">
-      <screen x="0" y="23" width="3440" height="1337" />
-    </state>
-    <state x="560" y="392" key="com.intellij.ide.util.TipDialog/0.0.1792.1120@0.0.1792.1120" timestamp="1602392782336" />
-    <state x="1075" y="491" key="com.intellij.ide.util.TipDialog/0.23.3440.1337/-1792.23.1792.1097@0.23.3440.1337" timestamp="1602956597989" />
     <state x="412" y="205" width="885" height="490" key="find.popup" timestamp="1608732763322">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
@@ -194,21 +190,6 @@
           <url>file://$PROJECT_DIR$/example/lib/main.dart</url>
           <line>94</line>
           <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/android/src/main/kotlin/com/pacificoseguros/securitystorage/security_storage/SecurityStoragePlugin.kt</url>
-          <line>133</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/android/src/main/kotlin/com/pacificoseguros/securitystorage/security_storage/SecurityStoragePlugin.kt</url>
-          <line>127</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/android/src/main/kotlin/com/pacificoseguros/securitystorage/security_storage/SecurityStoragePlugin.kt</url>
-          <line>130</line>
-          <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
