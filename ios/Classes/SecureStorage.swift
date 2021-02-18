@@ -28,6 +28,9 @@ public class SecureStorage: NSObject,Parceable {
     @objc public class func isAvailableInApp()->Bool {
         return Biometric.isAvailableInApp()
     }
+    @objc public class func isAvailableBiometricBanner()->Bool{
+        return Biometric.isAvailableBiometricBanner()
+    }
     @objc public class func canAuthenticate() -> String {
         if Biometric.isBiometricAvailable() {
             return "Success"

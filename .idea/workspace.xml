@@ -19,16 +19,28 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2600a4d6-f608-408c-8001-622e5b12bcbf" name="Default Changelist" comment="">
+    <list default="true" id="2600a4d6-f608-408c-8001-622e5b12bcbf" name="Default Changelist" comment="(feature) automatic biometric auth android">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/src/main/kotlin/com/pacificoseguros/securitystorage/security_storage/SecurityStoragePlugin.kt" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/kotlin/com/pacificoseguros/securitystorage/security_storage/SecurityStoragePlugin.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/android/src/main/kotlin/com/pacificoseguros/securitystorage/security_storage/SecurityStoragePlugin.kt" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/android/src/main/kotlin/com/pacificoseguros/securitystorage/security_storage/SecurityStoragePlugin.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/ios/Classes/Biometric.swift" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/ios/Classes/Biometric.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/ios/Classes/LocalAuth.swift" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/ios/Classes/LocalAuth.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/ios/Classes/SecureStorage.swift" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/ios/Classes/SecureStorage.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/ios/Classes/SwiftSecurityStoragePlugin.swift" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/ios/Classes/SwiftSecurityStoragePlugin.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/lib/security_storage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/lib/security_storage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Classes/Biometric.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/Biometric.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Classes/LocalAuth.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/LocalAuth.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Classes/SecureStorage.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/SecureStorage.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Classes/SwiftSecurityStoragePlugin.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/SwiftSecurityStoragePlugin.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/security_storage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/security_storage.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[196e6b2b]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[]" />
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
@@ -92,7 +104,14 @@
       <option name="project" value="LOCAL" />
       <updated>1606385482522</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="(feature) automatic biometric auth android">
+      <created>1612883908946</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1612883908946</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -110,7 +129,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="estable" />
     <MESSAGE value="stable" />
-    <option name="LAST_COMMIT_MESSAGE" value="stable" />
+    <MESSAGE value="(feature) automatic biometric auth android" />
+    <option name="LAST_COMMIT_MESSAGE" value="(feature) automatic biometric auth android" />
   </component>
   <component name="WindowStateProjectService">
     <state x="725" y="293" key="AndroidProcessChooserDialog" timestamp="1606113865838">
@@ -125,34 +145,34 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state width="644" height="466" key="DebuggerActiveHint/0.0.1920.1080@0.0.1920.1080" timestamp="1606110063095" />
-    <state width="1398" height="173" key="GridCell.Tab.0.bottom" timestamp="1612883512376">
-      <screen x="0" y="25" width="1440" height="875" />
+    <state width="1398" height="317" key="GridCell.Tab.0.bottom" timestamp="1613685242514">
+      <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="210" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1606419855275" />
+    <state width="1398" height="317" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1613685242514" />
     <state width="1878" height="484" key="GridCell.Tab.0.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1606168232979" />
     <state width="1878" height="484" key="GridCell.Tab.0.bottom/0.23.1920.978@0.23.1920.978" timestamp="1606163761610" />
-    <state width="1398" height="173" key="GridCell.Tab.0.bottom/0.25.1440.875@0.25.1440.875" timestamp="1612883512376" />
-    <state width="1398" height="173" key="GridCell.Tab.0.center" timestamp="1612883512376">
-      <screen x="0" y="25" width="1440" height="875" />
+    <state width="1398" height="414" key="GridCell.Tab.0.bottom/0.25.1440.875@0.25.1440.875" timestamp="1613684931353" />
+    <state width="1398" height="317" key="GridCell.Tab.0.center" timestamp="1613685242513">
+      <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="210" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1606419855274" />
+    <state width="1398" height="317" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1613685242513" />
     <state width="1878" height="484" key="GridCell.Tab.0.center/0.0.1920.1080@0.0.1920.1080" timestamp="1606168232977" />
     <state width="1878" height="484" key="GridCell.Tab.0.center/0.23.1920.978@0.23.1920.978" timestamp="1606163761607" />
-    <state width="1398" height="173" key="GridCell.Tab.0.center/0.25.1440.875@0.25.1440.875" timestamp="1612883512376" />
-    <state width="1398" height="173" key="GridCell.Tab.0.left" timestamp="1612883512375">
-      <screen x="0" y="25" width="1440" height="875" />
+    <state width="1398" height="414" key="GridCell.Tab.0.center/0.25.1440.875@0.25.1440.875" timestamp="1613684931353" />
+    <state width="1398" height="317" key="GridCell.Tab.0.left" timestamp="1613685242513">
+      <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="210" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1606419855274" />
+    <state width="1398" height="317" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1613685242513" />
     <state width="1878" height="484" key="GridCell.Tab.0.left/0.0.1920.1080@0.0.1920.1080" timestamp="1606168232975" />
     <state width="1878" height="484" key="GridCell.Tab.0.left/0.23.1920.978@0.23.1920.978" timestamp="1606163761606" />
-    <state width="1398" height="173" key="GridCell.Tab.0.left/0.25.1440.875@0.25.1440.875" timestamp="1612883512375" />
-    <state width="1398" height="173" key="GridCell.Tab.0.right" timestamp="1612883512376">
-      <screen x="0" y="25" width="1440" height="875" />
+    <state width="1398" height="414" key="GridCell.Tab.0.left/0.25.1440.875@0.25.1440.875" timestamp="1613684931352" />
+    <state width="1398" height="317" key="GridCell.Tab.0.right" timestamp="1613685242514">
+      <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="210" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1606419855274" />
+    <state width="1398" height="317" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1613685242514" />
     <state width="1878" height="484" key="GridCell.Tab.0.right/0.0.1920.1080@0.0.1920.1080" timestamp="1606168232978" />
     <state width="1878" height="484" key="GridCell.Tab.0.right/0.23.1920.978@0.23.1920.978" timestamp="1606163761608" />
-    <state width="1398" height="173" key="GridCell.Tab.0.right/0.25.1440.875@0.25.1440.875" timestamp="1612883512376" />
+    <state width="1398" height="414" key="GridCell.Tab.0.right/0.25.1440.875@0.25.1440.875" timestamp="1613684931353" />
     <state width="1878" height="268" key="GridCell.Tab.1.bottom" timestamp="1605220649667">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
@@ -190,6 +210,26 @@
           <url>file://$PROJECT_DIR$/example/lib/main.dart</url>
           <line>94</line>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/android/src/main/kotlin/com/pacificoseguros/securitystorage/security_storage/SecurityStoragePlugin.kt</url>
+          <line>227</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/android/src/main/kotlin/com/pacificoseguros/securitystorage/security_storage/SecurityStoragePlugin.kt</url>
+          <line>233</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/android/src/main/kotlin/com/pacificoseguros/securitystorage/security_storage/SecurityStoragePlugin.kt</url>
+          <line>238</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/android/src/main/kotlin/com/pacificoseguros/securitystorage/security_storage/SecurityStoragePlugin.kt</url>
+          <line>150</line>
+          <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

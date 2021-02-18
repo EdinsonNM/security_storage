@@ -139,6 +139,14 @@ public class Biometric: NSObject {
          let touchMe = LocalAuth()
         return touchMe.isAvailableInThisApp();
     }
- 
+     /*
+             * This function return true if the app is BiometricBanner auth completed and available
+             *
+           */
+    @objc public class func isAvailableBiometricBanner() -> Bool {
+         let touchMe = LocalAuth()
+         return touchMe.isAvailableBiometricBanner();
+    }
+
 }
 

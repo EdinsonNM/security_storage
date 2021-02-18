@@ -9,6 +9,7 @@ import UIKit
 import LocalAuthentication
 class LocalAuth: NSObject {
     // MARK:- Static Values
+    static let isAvailableBiometricBanner = "isAvailableBiometricBanner"
     static let loginReason = "Son necesarios los datos biométricos para validar que eres tu."
     static let account = "uniqueIdUserPacifico"
     static let identifierApp = "pacificoSeguros"
@@ -123,6 +124,30 @@ class LocalAuth: NSObject {
     func isAvailableInThisApp() -> Bool {
         let isAvailable:Bool = UserDefaults.standard.bool(forKey: LocalAuth.identifierApp)
         return isAvailable;
+    }
+    func isAvailableBiometricBanner() -> Bool {
+            var error:NSError?
+            if #available(iOS 11.0, *) {
+                if laContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+                    let defaults = UserDefaults.standard
+                    let isAvailableBiometricBanner:Bool = defaults.bool(forKey: LocalAuth.isAvailableBiometricBanner)
+                    if isAvailableBiometricBanner == false {
+                        defaults.set(true,forKey: LocalAuth.isAvailableBiometricBanner)
+                        defaults.synchronize()
+                    }
+                    if isAvailableInThisApp() == false && isAvailableBiometricBanner  == false {
+                        return true
+                    }else{
+                        return false
+                    }
+
+                }else{
+                    return false
+                }
+//                return false
+            }else{
+                return false
+            }
     }
     func getIcon() -> String {
         let defaults = UserDefaults.standard

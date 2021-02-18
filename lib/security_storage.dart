@@ -172,6 +172,11 @@ class SecurityStorage {
     var result = await _channel.invokeMethod<bool>('isAvailableInApp');
     return result;
   }
+  static Future<bool> isAvailableBiometricBanner()async{
+    var result = await _channel.invokeMethod<bool>('isAvailableBiometricBanner');
+    return result;
+  }
+
   static Future<CanAuthenticateResponse> getPermission() async {
 
       var result = await _channel.invokeMethod<String>('getPermission');

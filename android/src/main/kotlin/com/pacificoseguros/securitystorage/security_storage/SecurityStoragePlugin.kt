@@ -29,7 +29,6 @@ import java.security.InvalidAlgorithmParameterException
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-
 /** SecurityStoragePlugin */
 public class SecurityStoragePlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
   /// The MethodChannel that will the communication between Flutter and native Android
@@ -204,8 +203,7 @@ public class SecurityStoragePlugin: FlutterPlugin, MethodCallHandler, ActivityAw
   }
   private fun isAvailableInApp(): Boolean {
     var prefs = PreferenceHelper.customPrefs(this.context, "security-storage")
-    val isAvailableInApp = prefs.getBoolean("isAvailableInApp", false)
-    return isAvailableInApp
+    return prefs.getBoolean("isAvailableInApp", false)
   }
   private fun saveAvailableState(value:Boolean){
     var prefs = PreferenceHelper.customPrefs(this.context, "security-storage")

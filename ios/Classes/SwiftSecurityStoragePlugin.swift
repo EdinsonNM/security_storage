@@ -117,6 +117,10 @@ public class SwiftSecurityStoragePlugin: NSObject, FlutterPlugin {
             let resultValue = SecureStorage.getIconString()
             result(resultValue)
             break;
+        case "isAvailableBiometricBanner":
+            let resultValue = SecureStorage.isAvailableBiometricBanner()
+            result(resultValue)
+            break;
         default:
             result(FlutterMethodNotImplemented)
         }
