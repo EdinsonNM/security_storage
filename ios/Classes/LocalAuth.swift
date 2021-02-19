@@ -135,16 +135,10 @@ class LocalAuth: NSObject {
                         defaults.set(true,forKey: LocalAuth.isAvailableBiometricBanner)
                         defaults.synchronize()
                     }
-                    if isAvailableInThisApp() == false && isAvailableBiometricBanner  == false {
-                        return true
-                    }else{
-                        return false
-                    }
-
+                    return !isAvailableInThisApp() && !isAvailableBiometricBanner
                 }else{
                     return false
                 }
-//                return false
             }else{
                 return false
             }

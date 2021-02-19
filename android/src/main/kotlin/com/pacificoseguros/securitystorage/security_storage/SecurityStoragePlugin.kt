@@ -195,7 +195,13 @@ public class SecurityStoragePlugin: FlutterPlugin, MethodCallHandler, ActivityAw
         }else{
           result.success(false);
         }
-
+      }
+      "isAvailableBiometricBanner" -> {
+        if (isAvailableBiometricBanner()){
+          result.success(true);
+        }else{
+          result.success(false);
+        }
       }
       else -> result.notImplemented()
     }
@@ -204,6 +210,26 @@ public class SecurityStoragePlugin: FlutterPlugin, MethodCallHandler, ActivityAw
   private fun isAvailableInApp(): Boolean {
     var prefs = PreferenceHelper.customPrefs(this.context, "security-storage")
     return prefs.getBoolean("isAvailableInApp", false)
+  }
+  private fun isAvailableBiometricBanner(): Boolean {
+    if(canAuthenticate() == CanAuthenticateResponse.Success){
+      var prefs = PreferenceHelper.customPrefs(this.context, "security-storage")
+      val isAvailableBiometricBanner = prefs.getBoolean("isAvailableBiometricBanner", false)
+      if(!isAvailableBiometricBanner){
+        saveAvailableBiometricBannerState(true)
+      }
+      return !isAvailableInApp() && !isAvailableBiometricBanner
+    }else{
+      return false
+    }
+  }
+  private fun saveAvailableBiometricBannerState(value:Boolean){
+    var prefs = PreferenceHelper.customPrefs(this.context, "security-storage")
+    val sharedPref = prefs ?: return
+    with (sharedPref.edit()) {
+      putBoolean("isAvailableBiometricBanner", value)
+      apply()
+    }
   }
   private fun saveAvailableState(value:Boolean){
     var prefs = PreferenceHelper.customPrefs(this.context, "security-storage")
