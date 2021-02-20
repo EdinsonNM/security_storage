@@ -21,10 +21,7 @@
   <component name="ChangeListManager">
     <list default="true" id="2600a4d6-f608-408c-8001-622e5b12bcbf" name="Default Changelist" comment="(feature) isAvailableBiometricBanner">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/src/main/kotlin/com/pacificoseguros/securitystorage/security_storage/SecurityStoragePlugin.kt" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/kotlin/com/pacificoseguros/securitystorage/security_storage/SecurityStoragePlugin.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/android/src/main/kotlin/com/pacificoseguros/securitystorage/security_storage/SecurityStoragePlugin.kt" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/security_storage/android/src/main/kotlin/com/pacificoseguros/securitystorage/security_storage/SecurityStoragePlugin.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Classes/LocalAuth.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/LocalAuth.swift" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
