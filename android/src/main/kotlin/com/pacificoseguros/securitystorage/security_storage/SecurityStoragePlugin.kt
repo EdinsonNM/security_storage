@@ -124,21 +124,25 @@ public class SecurityStoragePlugin: FlutterPlugin, MethodCallHandler, ActivityAw
         storageItems[getName()]!!.encryptedData = gson.fromJson(json, EncryptedData::class.java)
       }
       "write" -> {
+
         withStorage {
           val name = getName()
-          val content= getContent()
-          promptInfo = createPromptInfo(getAndroidPromptInfo())
-          biometricPrompt = createBiometricPrompt({
-            processDataEncrypt(name,it.cryptoObject, content) { data ->
-              saveAvailableState(true)
-              result.success(data)
+          deleteData(name) { isDeleted ->
+            val content= getContent()
+            promptInfo = createPromptInfo(getAndroidPromptInfo())
+            biometricPrompt = createBiometricPrompt({
+              processDataEncrypt(name,it.cryptoObject, content) { data ->
+                saveAvailableState(true)
+                result.success(data)
+              }
+            }, {
+              result.error(it.error.toString(), it.message.toString(), it.errorDetails)
+            }, getContent())
+            authenticateToEncrypt(getName(), getContent()) {
+              result.error(it.error.toString(), it.message.toString(), it.errorDetails)
             }
-          }, {
-            result.error(it.error.toString(), it.message.toString(), it.errorDetails)
-          }, getContent())
-          authenticateToEncrypt(getName(), getContent()) {
-            result.error(it.error.toString(), it.message.toString(), it.errorDetails)
           }
+
         }
       }
       "read" -> {
@@ -230,6 +234,15 @@ public class SecurityStoragePlugin: FlutterPlugin, MethodCallHandler, ActivityAw
       putBoolean("isAvailableBiometricBanner", value)
       apply()
     }
+  }
+  private fun deleteData(name: String, onSuccess: (Boolean) -> Unit) {
+    var prefs = PreferenceHelper.customPrefs(this.context, "security-storage")
+
+    prefs.edit().remove(name).commit();
+    storageItems.remove(name)
+    cryptographyManager.removeStore(name)
+    saveAvailableState(false)
+    onSuccess(true)
   }
   private fun saveAvailableState(value:Boolean){
     var prefs = PreferenceHelper.customPrefs(this.context, "security-storage")
