@@ -11,7 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  flutter_secure_storage: ^3.3.5
   security_storage:
     # When depending on this package from a real application you should use:
     #   security_storage: ^x.y.z

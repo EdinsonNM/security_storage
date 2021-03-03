@@ -4,6 +4,9 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:logging/logging.dart';
 
+import 'package:encrypt/encrypt.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 final _logger = Logger('SecurityStorage');
 enum CanAuthenticateResponse {
   success,
@@ -183,23 +186,41 @@ class SecurityStorage {
 
       return _canAuthenticateMapping[result];
   }
+  Future<String> read() async {
+    final value = await _transformErrors(_channel.invokeMethod<String>('read', <String, dynamic>{
+      'name': this.name,
+      'androidPromptInfo': androidPromptInfo._toJson()
+    }));
+    if(value == null){
+      return value;
+    }else{
+      var isNew = (value.length<=44) ? true : false;
+      SecureTokenStorage().isLastVersion = isNew;
+      if(isNew){
+        SecureTokenStorage().Key32 = value;
+        var key32 = SecureTokenStorage().Key32;
+        final keyRandom = SecureTokenStorage.keyFromString(key32);
+        final token = await SecureTokenStorage.readToken(keyRandom,'token');
+        //return alway a randomKey or oldUser return Token Value
+        return token;
+      }else{
+        return value;
+      }
 
-  Future<String> read() =>
-      _transformErrors(_channel.invokeMethod<String>('read', <String, dynamic>{
-        'name': this.name,
-        'androidPromptInfo': androidPromptInfo._toJson()
-      }));
+    }
+  }
+  Future<String> write(String content) async {
+    final value = await _transformErrors(_channel.invokeMethod('write', <String, dynamic>{
+      'name': this.name,
+      'content': content,
+      'androidPromptInfo': androidPromptInfo._toJson()
+    }));
+    return value;
+  }
 
   Future<bool> delete() =>
       _transformErrors(_channel.invokeMethod<bool>('delete', <String, dynamic>{
         'name': this.name,
-        'androidPromptInfo': androidPromptInfo._toJson()
-      }));
-
-  Future<void> write(String content) =>
-      _transformErrors(_channel.invokeMethod('write', <String, dynamic>{
-        'name': this.name,
-        'content': content,
         'androidPromptInfo': androidPromptInfo._toJson()
       }));
 
@@ -220,4 +241,45 @@ class SecurityStorage {
         }
         return Future<T>.error(error, stackTrace);
       });
+}
+
+
+class SecureTokenStorage {
+  bool authenticationRequired = false;
+  bool isLastVersion = true;
+  String Key32;//Cipher Biometric Prompt para Android TokenRefresh Enroll
+  static final SecureTokenStorage _singleton = SecureTokenStorage._internal();
+  factory SecureTokenStorage() {
+    return _singleton;
+  }
+  SecureTokenStorage._internal();
+  static Key randomValue(){
+    return Key.fromSecureRandom(32);
+  }
+  static Key keyFromString(String keyBase64){
+    return Key.fromBase64(keyBase64);
+  }
+  static String encryptToken(Key key32,String plainText){
+
+    final iv = IV.fromLength(16);
+    final encrypting = Encrypter(AES(key32));
+    final encrypted = encrypting.encrypt(plainText, iv: iv);
+    return encrypted.base64 ;
+  }
+  static void saveData(Key key32, String value,String keyValue) async {
+    if(key32 != null){
+      final tokenEncrypted = SecureTokenStorage.encryptToken(key32,value);
+      final _storage = FlutterSecureStorage();
+      await _storage.write(key: keyValue, value: tokenEncrypted);
+    }
+  }
+  static Future<String> readToken(Key key32,String keyValue) async {
+    final _storage = FlutterSecureStorage();
+    var token = await _storage.read(key: keyValue);
+    final iv = IV.fromLength(16);
+    final encrypting = Encrypter(AES(key32));
+    final decrypted = encrypting.decrypt64(token,iv: iv);
+    return decrypted;
+  }
+
 }
