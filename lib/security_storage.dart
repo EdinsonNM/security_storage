@@ -191,7 +191,7 @@ class SecurityStorage {
       'name': this.name,
       'androidPromptInfo': androidPromptInfo._toJson()
     }));
-    if(value == null){
+    if(value == null || value == 'null'){
       return value;
     }else{
       var isNew = (value.length<=44) ? true : false;
